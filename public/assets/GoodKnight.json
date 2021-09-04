@@ -1,0 +1,125 @@
+{
+	"textures": [
+		{
+			"image": "GoodKnight.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1806,
+				"h": 398
+			},
+			"scale": 0.41667,
+			"frames": [
+				{
+					"filename": "Attack (1).png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 649,
+						"h": 474
+					},
+					"spriteSourceSize": {
+						"x": 199,
+						"y": 7,
+						"w": 320,
+						"h": 398
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 320,
+						"h": 398
+					}
+				},
+				{
+					"filename": "Attack (2).png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 649,
+						"h": 474
+					},
+					"spriteSourceSize": {
+						"x": 192,
+						"y": 11,
+						"w": 249,
+						"h": 394
+					},
+					"frame": {
+						"x": 320,
+						"y": 0,
+						"w": 249,
+						"h": 394
+					}
+				},
+				{
+					"filename": "Attack (3).png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 649,
+						"h": 474
+					},
+					"spriteSourceSize": {
+						"x": 206,
+						"y": 13,
+						"w": 420,
+						"h": 392
+					},
+					"frame": {
+						"x": 569,
+						"y": 0,
+						"w": 420,
+						"h": 392
+					}
+				},
+				{
+					"filename": "Attack (4).png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 649,
+						"h": 474
+					},
+					"spriteSourceSize": {
+						"x": 176,
+						"y": 22,
+						"w": 423,
+						"h": 383
+					},
+					"frame": {
+						"x": 989,
+						"y": 0,
+						"w": 423,
+						"h": 383
+					}
+				},
+				{
+					"filename": "Attack (5).png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 649,
+						"h": 474
+					},
+					"spriteSourceSize": {
+						"x": 176,
+						"y": 16,
+						"w": 394,
+						"h": 389
+					},
+					"frame": {
+						"x": 1412,
+						"y": 0,
+						"w": 394,
+						"h": 389
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:98469ed013b284af0a12f25622e54728:b11b009e7c7850412537279243defd41:1e51faff598773d5133a63eabe27b78b$"
+	}
+}
