@@ -36,6 +36,9 @@ export default class Scene1 extends Phaser.Scene {
       const style = { fontSize: '32px', fill: '#fff' }
       this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
 
+      const styleSmall = { fontSize: '16px', fill: '#fff' };
+      this.add.text (50, 700, 'left: <LEFT>, right: <RIGHT>, jump: <UP>\ntoggle music: <M>\npause game: <SPACE>');
+
       this.buttonPlay = new CustomButton(this, 100, 100, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnIsLocked, 'PLAY', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonPlay);
       if (!this.btnIsLocked) {

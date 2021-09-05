@@ -38,6 +38,10 @@ export default class GameOverScene extends Phaser.Scene {
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
             location.reload();
           })
+
+        this.input.keyboard.on('keydown-SPACE',  () => {
+            this.sound.stopAll();
+        }, this);
   
     }
   }

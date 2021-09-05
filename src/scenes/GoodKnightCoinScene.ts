@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import Moralis from 'moralis'
+// import Moralis from 'moralis'
 
 import BackgroundSpawner from './BackgroundSpawner'
 import KnightSpawner from './KnightSpawner'
@@ -43,8 +43,8 @@ const AUDIO_BACKGROUND_MUSIC_TWO = 'bgmTwo';
 const AUDIO_BACKGROUND_MUSIC_THREE = 'bgmThree';
 
 // connect to Moralis server
-Moralis.initialize("iXrIAo95USwRZUbHFzS3CIvD2iGezWbYrZWVjZFC");
-Moralis.serverURL = "https://6vsvjpvchvem.bigmoralis.com:2053/server";
+//Moralis.initialize("iXrIAo95USwRZUbHFzS3CIvD2iGezWbYrZWVjZFC");
+//Moralis.serverURL = "https://6vsvjpvchvem.bigmoralis.com:2053/server";
             
 export default class GameScene extends Phaser.Scene
 { 
@@ -67,6 +67,7 @@ export default class GameScene extends Phaser.Scene
     private coinSpawner! : CoinSpawner;
     private coins! : Phaser.Physics.Arcade.Group;
     private skullSpawner! : SkullSpawner; 
+    private gameOverSpawner! : GameOverSpawner;
     private cursors! : Phaser.Types.Input.Keyboard.CursorKeys;
     private livesLabel! : LivesLabel;
     private scoreLabel! : ScoreLabel;
@@ -119,10 +120,12 @@ export default class GameScene extends Phaser.Scene
     }
 
     init() {
+        const style = { fontSize: '32px', fill: '#fff' }
+        this.add.text(100, 100, 'loading...', style);
         this.score = 0;
         this.lives = 2; // 2 
         this.toggleMusic = true;
-        this.togglePause = true;
+        this.togglePause = false;
         this.completedLevels = 0;
 
         this.movingPlatformDirection = '';
@@ -255,15 +258,16 @@ export default class GameScene extends Phaser.Scene
             }, this);
 
             this.input.keyboard.on('keydown-SPACE',  () => {
+                this.togglePause = !this.togglePause;
                 if (this.togglePause) {
                 this.physics.pause();
-                this.backgroundMusic.stop();
+                this.sound.stopAll();
                 }
                 else {
                 this.physics.resume();
                 if (this.toggleMusic) { this.backgroundMusic.play(); }
                 }
-                this.togglePause = !this.togglePause;
+
             }, this);
     }
 
@@ -277,27 +281,31 @@ export default class GameScene extends Phaser.Scene
               this.movingPlatformDirection = 'left';
             }
             if (this.movingPlatformDirection === 'left') {
-                this.movingPlatforms.children.entries[0].x -= 1;
-                this.movingPlatforms.children.entries[1].x -= 1;
-                this.movingPlatforms.children.entries[2].x += 1;
-                this.movingPlatforms.children.entries[3].x += 1;
+                
+                if (!this.togglePause) {
+                    this.movingPlatforms.children.entries[0].x -= 1;
+                    this.movingPlatforms.children.entries[1].x -= 1;
+                    this.movingPlatforms.children.entries[2].x += 1;
+                    this.movingPlatforms.children.entries[3].x += 1;
 
-                this.movingPlatforms.children.entries[0].refreshBody();
-                this.movingPlatforms.children.entries[1].refreshBody();
-                this.movingPlatforms.children.entries[2].refreshBody();
-                this.movingPlatforms.children.entries[3].refreshBody();
+                    this.movingPlatforms.children.entries[0].refreshBody();
+                    this.movingPlatforms.children.entries[1].refreshBody();
+                    this.movingPlatforms.children.entries[2].refreshBody();
+                    this.movingPlatforms.children.entries[3].refreshBody();
+                }
             }
             else {
-                this.movingPlatforms.children.entries[0].x += 1;
-                this.movingPlatforms.children.entries[1].x += 1;
-                this.movingPlatforms.children.entries[2].x -= 1;
-                this.movingPlatforms.children.entries[3].x -= 1;
+                if (!this.togglePause) {
+                    this.movingPlatforms.children.entries[0].x += 1;
+                    this.movingPlatforms.children.entries[1].x += 1;
+                    this.movingPlatforms.children.entries[2].x -= 1;
+                    this.movingPlatforms.children.entries[3].x -= 1;
 
-                this.movingPlatforms.children.entries[0].refreshBody();
-                this.movingPlatforms.children.entries[1].refreshBody();
-                this.movingPlatforms.children.entries[2].refreshBody();
-                this.movingPlatforms.children.entries[3].refreshBody();
-
+                    this.movingPlatforms.children.entries[0].refreshBody();
+                    this.movingPlatforms.children.entries[1].refreshBody();
+                    this.movingPlatforms.children.entries[2].refreshBody();
+                    this.movingPlatforms.children.entries[3].refreshBody();
+                }
             }
         }
 
@@ -381,7 +389,7 @@ export default class GameScene extends Phaser.Scene
         }
     }
 
-    async hitSkull(player, skull)
+    /* async */ hitSkull(player, skull)
     {
         // console.log(this);
         if (this.toggleMusic) { 
@@ -401,7 +409,7 @@ export default class GameScene extends Phaser.Scene
             if (this.toggleMusic) { this.backgroundMusic.stop(); }
             if (this.toggleMusic) { this.gameOverFunny.play(); }
 
-            let auth = await Moralis.Web3.authenticate();
+/*            let auth = await Moralis.Web3.authenticate();
             const userAddress = auth.get('ethAddress');
             console.log(userAddress);
             const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
@@ -413,8 +421,11 @@ export default class GameScene extends Phaser.Scene
             let result = await goodKnightScore.save();
             console.log(goodKnightScore);
             this.moralisScoreSavedLabel = this.createMoralisScoreSavedLabel(16 ,84, result.id)
- 
-            this.scene.start('game-over');
+ */         
+            setTimeout( () => {
+                this.scene.start('game-over');
+            }, 3000); 
+            
     
         }
         else {
