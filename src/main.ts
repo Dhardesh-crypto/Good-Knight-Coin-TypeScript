@@ -3,6 +3,9 @@ import Phaser from 'phaser'
 import GoodKnightCoinScene from './scenes/GoodKnightCoinScene'
 import Welcome from './scenes/Welcome'
 import GameOverScene from './scenes/GameOverScene'
+import CongratulationsScene from './scenes/CongratulationsScene'
+
+var score;
 
 const config = {
     type: Phaser.AUTO,
@@ -14,7 +17,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+          /*  gravity: { y: 300 }, */
             debug: false
         }
     },
@@ -26,7 +29,8 @@ const config = {
 	scene: [
         Welcome, 
         GoodKnightCoinScene, 
-        GameOverScene
+        GameOverScene,
+        CongratulationsScene
     ]
 }
 

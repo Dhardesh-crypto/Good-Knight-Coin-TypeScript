@@ -9,6 +9,7 @@ import CoinSpawner from './CoinSpawner'
 import ScoreLabel from '../ui/ScoreLabel'
 import LivesLabel from '../ui/LivesLabel'
 import SkullSpawner from './SkullSpawner'
+import HealthPotionSpawner from './HealthPotionSpawner'
 import GameOverSpawner from './GameOverSpawner'
 import MoralisScoreSavedLabel from '../ui/MoralisScoreSavedLabel'
 
@@ -20,6 +21,8 @@ const BACKGROUND4_KEY = 'background4';
 const BACKGROUND5_KEY = 'background5';
 const BACKGROUND6_KEY = 'background6';
 const BACKGROUND7_KEY = 'background7';
+const BACKGROUND8_KEY = 'background8';
+const BACKGROUND9_KEY = 'background9';
 const SCORE_BACKGROUND_KEY = 'scoreBackground';
 const LIVES_BACKGROUND_KEY = 'livesBackground';
 const GROUND_KEY = 'ground';
@@ -28,6 +31,7 @@ const GROUND_RIGHT_KEY = 'groundRight';
 const KNIGHT_KEY = 'knight';
 const COIN_KEY = 'coin';
 const SKULL_KEY = 'skull';
+const HEALTH_POTION_KEY = 'healthPotion';
 const TREE_KEY = 'tree';
 const BUSH_ONE_KEY = 'bush1' ;
 const BUSH_TWO_KEY = 'bush2';
@@ -37,6 +41,7 @@ const AUDIO_SKULL_HIT = 'skullHit';
 const AUDIO_MISSION_COMPLETE = 'missionComplete';
 const AUDIO_GAME_OVER = 'gameOverFunny';
 const AUDIO_PLAYER_JUMP = 'playerJump';
+const AUDIO_HEALTH_POTION = 'drinkPotion';
 const AUDIO_BACKGROUND_MUSIC = 'backgroundMusic';
 const AUDIO_BACKGROUND_MUSIC_ONE = 'bgmOne';
 const AUDIO_BACKGROUND_MUSIC_TWO = 'bgmTwo';
@@ -56,6 +61,8 @@ export default class GameScene extends Phaser.Scene
     private background5! : Phaser.GameObjects.Image;
     private background6! : Phaser.GameObjects.Image;
     private background7! : Phaser.GameObjects.Image;
+    private background8! : Phaser.GameObjects.Image;
+    private background9! : Phaser.GameObjects.Image;
     private scoreBackground! : Phaser.GameObjects.Image;
     private livesBackground! : Phaser.GameObjects.Image;
     private platformSpawner! : PlatformSpawner;
@@ -67,7 +74,10 @@ export default class GameScene extends Phaser.Scene
     private coinSpawner! : CoinSpawner;
     private coins! : Phaser.Physics.Arcade.Group;
     private skullSpawner! : SkullSpawner; 
+    private skullGroup! : Phaser.Physics.Arcade.Group;
     private gameOverSpawner! : GameOverSpawner;
+    private potionSpawner! : HealthPotionSpawner;
+    private potions! : Phaser.Physics.Arcade.Group;
     private cursors! : Phaser.Types.Input.Keyboard.CursorKeys;
     private livesLabel! : LivesLabel;
     private scoreLabel! : ScoreLabel;
@@ -77,6 +87,7 @@ export default class GameScene extends Phaser.Scene
     private missionComplete! : Phaser.Sound.BaseSound;
     private gameOverFunny! : Phaser.Sound.BaseSound;
     private playerJump! : Phaser.Sound.BaseSound;
+    private drinkPotion! : Phaser.Sound.BaseSound;
     private backgroundMusic! : Phaser.Sound.BaseSound;
     private jumpHeight!: integer;
     private movementSpeed! : integer;
@@ -163,13 +174,15 @@ export default class GameScene extends Phaser.Scene
     preload()
     {
 //        this.load.image(BACKGROUND_KEY, 'assets/BGHills.jpg');
-        this.load.image(BACKGROUND1_KEY, 'assets/Background1.png');
-        this.load.image(BACKGROUND2_KEY, 'assets/Background2.png');
-        this.load.image(BACKGROUND3_KEY, 'assets/Background3.png');
-        this.load.image(BACKGROUND4_KEY, 'assets/Background4.png');
-        this.load.image(BACKGROUND5_KEY, 'assets/Background5.png');
-        this.load.image(BACKGROUND6_KEY, 'assets/Background6.png');
-        this.load.image(BACKGROUND7_KEY, 'assets/Background7.png');
+        this.load.image(BACKGROUND1_KEY, 'assets/1.png');
+        this.load.image(BACKGROUND2_KEY, 'assets/2.png');
+        this.load.image(BACKGROUND3_KEY, 'assets/3.png');
+        this.load.image(BACKGROUND4_KEY, 'assets/4.png');
+        this.load.image(BACKGROUND5_KEY, 'assets/5.png');
+        this.load.image(BACKGROUND6_KEY, 'assets/6.png');
+        this.load.image(BACKGROUND7_KEY, 'assets/7.png');
+        this.load.image(BACKGROUND8_KEY, 'assets/8.png');
+        this.load.image(BACKGROUND9_KEY, 'assets/9.png');
         this.load.image(SCORE_BACKGROUND_KEY, 'assets/Score_Background.png');
         this.load.image(LIVES_BACKGROUND_KEY, 'assets/Lives_Background.png');
         this.load.image(GROUND_KEY, 'assets/Tile (2).png');
@@ -177,6 +190,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image(GROUND_RIGHT_KEY, 'assets/Tile (3).png');
         this.load.image(COIN_KEY, 'assets/coin.png');
         this.load.image(SKULL_KEY, 'assets/Bone (2).png');
+        this.load.image(HEALTH_POTION_KEY, 'assets/Potion_health.png');
         this.load.spritesheet(KNIGHT_KEY,
             'assets/Knight.png',
             { frameWidth: 181, frameHeight: 244 }
@@ -192,6 +206,7 @@ export default class GameScene extends Phaser.Scene
         this.load.audio(AUDIO_MISSION_COMPLETE, [ 'assets/missionComplete.wav', 'assets/missionComplete.wav' ]);
         this.load.audio(AUDIO_GAME_OVER, [ 'assets/GameOverFunny.mp3', 'assets/GameOverFunny.mp3']);
         this.load.audio(AUDIO_PLAYER_JUMP, [ 'assets/playerJump.wav', 'assets/playerJump.wav' ]);
+        this.load.audio(AUDIO_HEALTH_POTION, [ 'assets/HealthPotion.wav', 'assets/HealthPotion.wav' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC, [ 'assets/BackgroundMusic.mp3', 'assets/BackgroundMusic.mp3' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC_ONE, [ 'assets/BGMSuperDuper.mp3', 'assets/BGMSuperDuper.mp3' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC_TWO, [ 'assets/BGMBreakingPoint.mp3', 'assets/BGMBreakingPoint.mp3' ]);
@@ -202,7 +217,10 @@ export default class GameScene extends Phaser.Scene
     create() 
     {
 //            this.background = this.add.image(0, 800, BACKGROUND_KEY).setOrigin(0,1);
-            this.background = new BackgroundSpawner(this, 600, 400, BACKGROUND1_KEY, BACKGROUND2_KEY, BACKGROUND3_KEY, BACKGROUND4_KEY, BACKGROUND5_KEY, BACKGROUND6_KEY, BACKGROUND7_KEY);
+            this.background = new BackgroundSpawner(this, 600, 400, 
+                BACKGROUND1_KEY, BACKGROUND2_KEY, BACKGROUND3_KEY, 
+                BACKGROUND4_KEY, BACKGROUND5_KEY, BACKGROUND6_KEY, 
+                BACKGROUND7_KEY, BACKGROUND8_KEY, BACKGROUND9_KEY);
             this.background.changeScene(1);
             this.add.existing(this.background);
             this.scoreBackground = this.add.image(80,33, SCORE_BACKGROUND_KEY).setScale(0.4);
@@ -236,20 +254,75 @@ export default class GameScene extends Phaser.Scene
             this.livesLabel = this.createLivesLabel(63, 67, this.lives);
 
             this.skullSpawner = new SkullSpawner(this, SKULL_KEY);
-            const skullGroup = this.skullSpawner.group;
+            this.skullGroup = this.skullSpawner.group;
 
-            this.physics.add.collider(skullGroup, this.platforms)
-            this.physics.add.collider(skullGroup, this.movingPlatforms)
-            this.physics.add.collider(skullGroup, skullGroup)
-            this.physics.add.collider(this.player, skullGroup, this.hitSkull, undefined, this)
+            this.physics.add.collider(this.skullGroup, this.platforms)
+            this.physics.add.collider(this.skullGroup, this.movingPlatforms)
+            this.physics.add.collider(this.skullGroup, this.skullGroup)
+            this.physics.add.collider(this.player, this.skullGroup, this.hitSkull, undefined, this)
 
             this.coinCollect = this.sound.add(AUDIO_COLLECT_COIN);
             this.skullHit = this.sound.add(AUDIO_SKULL_HIT);
             this.missionComplete = this.sound.add(AUDIO_MISSION_COMPLETE);
             this.gameOverFunny = this.sound.add(AUDIO_GAME_OVER);
             this.playerJump = this.sound.add(AUDIO_PLAYER_JUMP);
+            this.drinkPotion = this.sound.add(AUDIO_HEALTH_POTION);
             this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
             this.backgroundMusic.play();
+
+            if (window.location.hostname === 'localhost') {
+                this.input.keyboard.on('keydown-H', () => {
+                    this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                    this.potions = this.potionSpawner.spawn();
+                    this.physics.add.collider(this.potions, this.platforms);
+                    this.physics.add.collider(this.potions, this.movingPlatforms);
+                    this.physics.add.collider(this.potions, this.skullGroup);
+                    this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
+                }, this);
+
+                this.input.keyboard.on('keydown-Q', () => {
+                    this.background.changeScene(1)
+                }, this);
+
+                this.input.keyboard.on('keydown-W', () => {
+                    this.background.changeScene(2)
+                }, this);
+
+                this.input.keyboard.on('keydown-E', () => {
+                    this.background.changeScene(3)
+                }, this);
+
+                this.input.keyboard.on('keydown-R', () => {
+                    this.background.changeScene(4)
+                }, this);
+
+                this.input.keyboard.on('keydown-T', () => {
+                    this.background.changeScene(5)
+                }, this);
+
+                this.input.keyboard.on('keydown-Y', () => {
+                    this.background.changeScene(6)
+                }, this);
+
+                this.input.keyboard.on('keydown-U', () => {
+                    this.background.changeScene(7)
+                }, this);
+
+                this.input.keyboard.on('keydown-I', () => {
+                    this.background.changeScene(8)
+                }, this);
+
+                this.input.keyboard.on('keydown-O', () => {
+                    this.background.changeScene(9)
+                }, this);
+
+                this.input.keyboard.on('keydown-L', () => {
+                    this.lives += 1;
+                    this.livesLabel.add(1)
+                }, this);
+
+
+            }
 
             this.input.keyboard.on('keydown-M',  () => {
                 this.toggleMusic = !this.toggleMusic;
@@ -274,24 +347,24 @@ export default class GameScene extends Phaser.Scene
     update()
 	{
         if (this.completedLevels >= 3) {
-            if (this.movingPlatforms.children.entries[0].x === 0) {
+            if (this.movingPlatforms.getChildren()[0].x === 0) {
                 this.movingPlatformDirection = 'right';
             }
-            if (this.movingPlatforms.children.entries[1].x === 1140) {
+            if (this.movingPlatforms.getChildren()[1].x === 1140) {
               this.movingPlatformDirection = 'left';
             }
             if (this.movingPlatformDirection === 'left') {
                 
                 if (!this.togglePause) {
-                    this.movingPlatforms.children.entries[0].x -= 1;
-                    this.movingPlatforms.children.entries[1].x -= 1;
-                    this.movingPlatforms.children.entries[2].x += 1;
-                    this.movingPlatforms.children.entries[3].x += 1;
+                    this.movingPlatforms.getChildren()[0].x -= 1;
+                    this.movingPlatforms.getChildren()[1].x -= 1;
+                    this.movingPlatforms.getChildren()[2].x += 1;
+                    this.movingPlatforms.getChildren()[3].x += 1;
 
-                    this.movingPlatforms.children.entries[0].refreshBody();
-                    this.movingPlatforms.children.entries[1].refreshBody();
-                    this.movingPlatforms.children.entries[2].refreshBody();
-                    this.movingPlatforms.children.entries[3].refreshBody();
+                    this.movingPlatforms.getChildren()[0].refreshBody();
+                    this.movingPlatforms.getChildren()[1].refreshBody();
+                    this.movingPlatforms.getChildren()[2].refreshBody();
+                    this.movingPlatforms.getChildren()[3].refreshBody();
                 }
             }
             else {
@@ -332,6 +405,15 @@ export default class GameScene extends Phaser.Scene
         }
 	}
 
+    collectPotion(player, potion) {
+        if (this.toggleMusic) { this.drinkPotion.play(); }
+        potion.disableBody(true, true);
+        this.lives += 1;
+        this.livesLabel.add(1);
+        player.setTint(0x00ff00);
+//        player.clearTint(); // reset the red color in case of being hit before
+    }
+
     collectCoin(player, coin) {
         if (this.toggleMusic) { this.coinCollect.play(); }
         coin.disableBody(true, true);
@@ -339,9 +421,79 @@ export default class GameScene extends Phaser.Scene
         this.scoreLabel.add(10)
         player.clearTint(); // reset the red color in case of being hit before
 
+        if (this.score === 1500) {
+            this.scene.start('congratulations');
+        }
+
         if (this.coins.countActive(true) == 0) {
 
             this.completedLevels += 1;
+            switch (this.completedLevels) {
+                case 1: {
+                    this.background.changeScene(2);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmTwo');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 2: {
+                    this.background.changeScene(3);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmThree');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 3: {
+                    this.background.changeScene(4);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmOne');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 4: {
+                    this.background.changeScene(5);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmTwo');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 5: {
+                    this.background.changeScene(6);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmThree');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 6: {
+                    this.background.changeScene(7);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmOne');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 7: {
+                    this.background.changeScene(8);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('bgmTwo');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                case 8: {
+                    this.background.changeScene(9);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('backgroundMusic');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+                default: {
+                    this.background.changeScene(1);
+                    this.backgroundMusic.stop();
+                    this.backgroundMusic = this.sound.add('backgroundMusic');
+                    if (this.toggleMusic) { this.backgroundMusic.play(); }
+                    break;
+                }
+            }
+            /*
             if (this.completedLevels == 1 || this.completedLevels == 4) {
                 this.completedLevels == 1 ? this.background.changeScene(2) : this.background.changeScene(5); 
                 this.backgroundMusic.stop();
@@ -360,11 +512,19 @@ export default class GameScene extends Phaser.Scene
                 this.backgroundMusic = this.sound.add('bgmOne');
                 if (this.toggleMusic) { this.backgroundMusic.play(); }
             }
+            else if (this.completedLevels == 7) {
+                this.background.changeScene(8);
+                this.backgroundMusic.stop();
+                this.backgroundMusic = this.sound.add('bgmTwo');
+                if (this.toggleMusic) { this.backgroundMusic.play(); }
+            }
             else {
+                this.background.changeScene(9);
                 this.backgroundMusic.stop();
                 this.backgroundMusic = this.sound.add('backgroundMusic');
                 if (this.toggleMusic) { this.backgroundMusic.play(); }
-            }
+            } */
+
 
 
           if (this.completedLevels === 3) {

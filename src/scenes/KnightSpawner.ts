@@ -19,6 +19,7 @@ export default class KnightSpawner
         const player = this.scene.physics.add.sprite(20, 700, this.key).setScale(0.4).refreshBody();
 		player.setBodySize(player.width*0.6, player.height*0.8); // Makes the body collision area smaller
 		player.setBounce(0.2);
+		player.setGravityY(300);
 		player.setCollideWorldBounds(true);
 
 		this.scene.anims.create({

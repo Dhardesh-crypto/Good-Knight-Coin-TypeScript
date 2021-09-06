@@ -32,14 +32,14 @@ export default class Scene1 extends Phaser.Scene {
     }
   
     create() {
-      this.background = this.add.image(605, 800, SPLASHSCREEN_KEY).setOrigin(0,1);
+      this.background = this.add.image(633, 800, SPLASHSCREEN_KEY).setScale(0.625).setOrigin(0,1);
       const style = { fontSize: '32px', fill: '#fff' }
-      this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
+      this.welcomeText = this.add.text(50, 230, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
 
       const styleSmall = { fontSize: '16px', fill: '#fff' };
-      this.add.text (50, 700, 'left: <LEFT>, right: <RIGHT>, jump: <UP>\ntoggle music: <M>\npause game: <SPACE>');
+      this.add.text (50, 700, 'left: <LEFT>, right: <RIGHT>, jump: <UP>\nnpm run starttoggle music: <M>\npause game: <SPACE>');
 
-      this.buttonPlay = new CustomButton(this, 100, 100, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnIsLocked, 'PLAY', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+      this.buttonPlay = new CustomButton(this, 85, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnIsLocked, 'PLAY', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonPlay);
       if (!this.btnIsLocked) {
         this.buttonPlay.setInteractive()
@@ -48,7 +48,7 @@ export default class Scene1 extends Phaser.Scene {
           })
       }
 
-      this.buttonLoadNFT = new CustomButton(this, 300, 100, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+      this.buttonLoadNFT = new CustomButton(this, 250, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonLoadNFT);
       if (!this.btnNFTIsLocked) {
         this.buttonLoadNFT.setInteractive()

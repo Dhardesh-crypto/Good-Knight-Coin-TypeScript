@@ -28,13 +28,13 @@ export default class MovingPlatformSpawner
 
 	spawn()
 	{
-        this.group.create(600,340, this.groundLeftKey).setScale(0.5).refreshBody();
-        this.group.create(660,340, this.groundRightKey).setScale(0.5).refreshBody();
-        this.group.create(300,400, this.groundLeftKey).setScale(0.5).refreshBody();
-        this.group.create(360,400, this.groundRightKey).setScale(0.5).refreshBody();
+        const platform1a = this.group.create(600,340, this.groundLeftKey).setScale(0.5).refreshBody();
+        const platform1b = this.group.create(660,340, this.groundRightKey).setScale(0.5).refreshBody();
+        const platform2a = this.group.create(300,400, this.groundLeftKey).setScale(0.5).refreshBody();
+        const platform2b = this.group.create(360,400, this.groundRightKey).setScale(0.5).refreshBody();
 
-        this.group.children.entries[0].disableBody(true, true); // hide while not completedLevels = 4
-        this.group.children.entries[1].disableBody(true, true);
+		platform1a.disableBody(true, true); // hide while not completedLevels = 4
+		platform1b.disableBody(true, true);
 		
 		return this.group
 	}

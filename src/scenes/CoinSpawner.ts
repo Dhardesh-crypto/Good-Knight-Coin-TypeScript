@@ -18,7 +18,8 @@ export default class CoinSpawner
         const coins = this.scene.physics.add.group({
 			key: this.key,
 			repeat: 16,
-			setXY: { x: 12, y: 0, stepX: 70 }
+			setXY: { x: 12, y: 0, stepX: 70 },
+			gravityY: 200
 		})
 		
 		coins.children.iterate((child) => {

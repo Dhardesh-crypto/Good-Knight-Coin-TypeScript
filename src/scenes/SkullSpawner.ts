@@ -27,9 +27,10 @@ export default class SkullSpawner
 		const x = (playerX < 600) ? Phaser.Math.Between(600, 1200) : Phaser.Math.Between(0, 600)
 
         const skull = this.group.create(x, 16, this.key).setScale(1.7).refreshBody();
-        skull.setBounce(1)
-        skull.setCollideWorldBounds(true)
-		skull.setVelocity(Phaser.Math.Between(-200, 200), 20)
+        skull.setBounce(1);
+		skull.setGravityY(300);
+        skull.setCollideWorldBounds(true);
+		skull.setVelocity(Phaser.Math.Between(-200, 200), 20);
 		
 		return skull
 	}
