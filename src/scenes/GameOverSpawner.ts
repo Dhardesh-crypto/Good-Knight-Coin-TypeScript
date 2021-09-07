@@ -16,7 +16,7 @@ export default class GameOverSpawner
 
 	spawn()
 	{
-        const gameOver =  this.scene.add.image(600, 400, this.key);
+        const gameOver =  this.scene.add.image(650, 350, this.key);
         this.scene.physics.pause();
         return gameOver;
 	}

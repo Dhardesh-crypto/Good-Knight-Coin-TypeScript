@@ -5,8 +5,6 @@ import Welcome from './scenes/Welcome'
 import GameOverScene from './scenes/GameOverScene'
 import CongratulationsScene from './scenes/CongratulationsScene'
 
-var score;
-
 const config = {
     type: Phaser.AUTO,
     dom: {

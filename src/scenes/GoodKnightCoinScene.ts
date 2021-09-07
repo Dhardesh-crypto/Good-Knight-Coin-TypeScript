@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-// import Moralis from 'moralis'
 
 import BackgroundSpawner from './BackgroundSpawner'
 import KnightSpawner from './KnightSpawner'
@@ -46,10 +45,6 @@ const AUDIO_BACKGROUND_MUSIC = 'backgroundMusic';
 const AUDIO_BACKGROUND_MUSIC_ONE = 'bgmOne';
 const AUDIO_BACKGROUND_MUSIC_TWO = 'bgmTwo';
 const AUDIO_BACKGROUND_MUSIC_THREE = 'bgmThree';
-
-// connect to Moralis server
-//Moralis.initialize("iXrIAo95USwRZUbHFzS3CIvD2iGezWbYrZWVjZFC");
-//Moralis.serverURL = "https://6vsvjpvchvem.bigmoralis.com:2053/server";
             
 export default class GameScene extends Phaser.Scene
 { 
@@ -102,32 +97,6 @@ export default class GameScene extends Phaser.Scene
     constructor() 
     {
         super('game-scene');
-        
-      //  this.platforms = undefined;
-      //  this.movingPlatformSpawner = undefined;
-      //  this.movingPlatforms = undefined;
-      //  this.player = undefined;
-      //  this.playerSpawner = undefined;
-      //  this.coins = undefined;
-      //  this.coinSpawner = undefined;
-      //  this.cursors = undefined;
-      //  this.scoreLabel = undefined;
-      //  this.livesLabel = undefined;
-      //  this.skullSpawner = undefined;
-      //  this.gameOverSpawner = undefined;
-
-     //   this.coinCollect = undefined;
-     //  this.skullHit = undefined;
-     //   this.missionComplete = undefined;
-     //   this.gameOverFunny = undefined;
-     //   this.playerJump = undefined;
-     //   this.backgroundMusic = undefined;
-
-
-     //   this.movingPlatformDirection = undefined;
-     //   this.moralisScoreSavedLabel = undefined;
-
-
     }
 
     init() {
@@ -143,37 +112,10 @@ export default class GameScene extends Phaser.Scene
         this.jumpHeight = -400;
         this.movementSpeed = 160; // 160
         this.gameOver = false;
-
-/*        this.background = undefined;
-        this.platformSpawner = undefined;
-        this.platforms = undefined;
-        this.movingPlatformSpawner = undefined;
-        this.movingPlatforms = undefined;
-        this.player = undefined;
-        this.playerSpawner = undefined;
-        this.coins = undefined;
-        this.coinSpawner = undefined;
-        this.cursors = undefined; */
-//        this.scoreLabel = undefined;
-
-/*        this.livesLabel = undefined;
-        this.skullSpawner = undefined;
-        this.gameOverSpawner = undefined;
-
-        this.coinCollect = undefined;
-        this.skullHit = undefined;
-        this.missionComplete = undefined;
-        this.gameOverFunny = undefined;
-        this.playerJump = undefined;
-        this.backgroundMusic = undefined; */
-
-
-//        this.moralisScoreSavedLabel = undefined;
     }
 
     preload()
     {
-//        this.load.image(BACKGROUND_KEY, 'assets/BGHills.jpg');
         this.load.image(BACKGROUND1_KEY, 'assets/1.png');
         this.load.image(BACKGROUND2_KEY, 'assets/2.png');
         this.load.image(BACKGROUND3_KEY, 'assets/3.png');
@@ -216,132 +158,131 @@ export default class GameScene extends Phaser.Scene
 
     create() 
     {
-//            this.background = this.add.image(0, 800, BACKGROUND_KEY).setOrigin(0,1);
-            this.background = new BackgroundSpawner(this, 600, 400, 
-                BACKGROUND1_KEY, BACKGROUND2_KEY, BACKGROUND3_KEY, 
-                BACKGROUND4_KEY, BACKGROUND5_KEY, BACKGROUND6_KEY, 
-                BACKGROUND7_KEY, BACKGROUND8_KEY, BACKGROUND9_KEY);
-            this.background.changeScene(1);
-            this.add.existing(this.background);
-            this.scoreBackground = this.add.image(80,33, SCORE_BACKGROUND_KEY).setScale(0.4);
-            this.livesBackground = this.add.image(80,83, LIVES_BACKGROUND_KEY).setScale(0.4);
+        this.background = new BackgroundSpawner(this, 600, 400, 
+            BACKGROUND1_KEY, BACKGROUND2_KEY, BACKGROUND3_KEY, 
+            BACKGROUND4_KEY, BACKGROUND5_KEY, BACKGROUND6_KEY, 
+            BACKGROUND7_KEY, BACKGROUND8_KEY, BACKGROUND9_KEY);
+        this.background.changeScene(1);
+        this.add.existing(this.background);
+        this.scoreBackground = this.add.image(80,33, SCORE_BACKGROUND_KEY).setScale(0.4);
+        this.livesBackground = this.add.image(80,83, LIVES_BACKGROUND_KEY).setScale(0.4);
 
-            this.platformSpawner = new PlatformSpawner(this, GROUND_KEY, GROUND_LEFT_KEY, GROUND_RIGHT_KEY);
-            this.platforms = this.platformSpawner.spawn();
+        this.platformSpawner = new PlatformSpawner(this, GROUND_KEY, GROUND_LEFT_KEY, GROUND_RIGHT_KEY);
+        this.platforms = this.platformSpawner.spawn();
 
-            this.movingPlatformSpawner = new MovingPlatformSpawner(this, GROUND_KEY, GROUND_LEFT_KEY, GROUND_RIGHT_KEY);
-            this.movingPlatforms = this.movingPlatformSpawner.spawn();
+        this.movingPlatformSpawner = new MovingPlatformSpawner(this, GROUND_KEY, GROUND_LEFT_KEY, GROUND_RIGHT_KEY);
+        this.movingPlatforms = this.movingPlatformSpawner.spawn();
 
-            this.add.image(400, 645, TREE_KEY);
-            this.add.image(1100, 725, BUSH_ONE_KEY);
-            this.add.image(1000, 740, BUSH_TWO_KEY);
+        this.add.image(400, 645, TREE_KEY);
+        this.add.image(1100, 725, BUSH_ONE_KEY);
+        this.add.image(1000, 740, BUSH_TWO_KEY);
 
-            this.playerSpawner = new KnightSpawner(this, KNIGHT_KEY);
-            this.player = this.playerSpawner.spawn();            
-            this.physics.add.collider(this.player, this.platforms);
-            this.physics.add.collider(this.player, this.movingPlatforms);
+        this.playerSpawner = new KnightSpawner(this, KNIGHT_KEY);
+        this.player = this.playerSpawner.spawn();            
+        this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.player, this.movingPlatforms);
 
-            this.coinSpawner = new CoinSpawner(this, COIN_KEY)
-            this.coins =  this.coinSpawner.spawn()
+        this.coinSpawner = new CoinSpawner(this, COIN_KEY)
+        this.coins =  this.coinSpawner.spawn()
 
-            this.physics.add.collider(this.coins, this.platforms);
-            this.physics.add.collider(this.coins, this.movingPlatforms);
-            this.physics.add.overlap(this.player, this.coins, this.collectCoin, undefined, this);
+        this.physics.add.collider(this.coins, this.platforms);
+        this.physics.add.collider(this.coins, this.movingPlatforms);
+        this.physics.add.overlap(this.player, this.coins, this.collectCoin, undefined, this);
 
-            this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
 
-            this.scoreLabel = this.createScoreLabel(63, 16, this.score);
-            this.livesLabel = this.createLivesLabel(63, 67, this.lives);
+        this.scoreLabel = this.createScoreLabel(63, 16, this.score);
+        this.livesLabel = this.createLivesLabel(63, 67, this.lives);
 
-            this.skullSpawner = new SkullSpawner(this, SKULL_KEY);
-            this.skullGroup = this.skullSpawner.group;
+        this.skullSpawner = new SkullSpawner(this, SKULL_KEY);
+        this.skullGroup = this.skullSpawner.group;
 
-            this.physics.add.collider(this.skullGroup, this.platforms)
-            this.physics.add.collider(this.skullGroup, this.movingPlatforms)
-            this.physics.add.collider(this.skullGroup, this.skullGroup)
-            this.physics.add.collider(this.player, this.skullGroup, this.hitSkull, undefined, this)
+        this.physics.add.collider(this.skullGroup, this.platforms)
+        this.physics.add.collider(this.skullGroup, this.movingPlatforms)
+        this.physics.add.collider(this.skullGroup, this.skullGroup)
+        this.physics.add.collider(this.player, this.skullGroup, this.hitSkull, undefined, this)
 
-            this.coinCollect = this.sound.add(AUDIO_COLLECT_COIN);
-            this.skullHit = this.sound.add(AUDIO_SKULL_HIT);
-            this.missionComplete = this.sound.add(AUDIO_MISSION_COMPLETE);
-            this.gameOverFunny = this.sound.add(AUDIO_GAME_OVER);
-            this.playerJump = this.sound.add(AUDIO_PLAYER_JUMP);
-            this.drinkPotion = this.sound.add(AUDIO_HEALTH_POTION);
-            this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
-            this.backgroundMusic.play();
+        this.coinCollect = this.sound.add(AUDIO_COLLECT_COIN);
+        this.skullHit = this.sound.add(AUDIO_SKULL_HIT);
+        this.missionComplete = this.sound.add(AUDIO_MISSION_COMPLETE);
+        this.gameOverFunny = this.sound.add(AUDIO_GAME_OVER);
+        this.playerJump = this.sound.add(AUDIO_PLAYER_JUMP);
+        this.drinkPotion = this.sound.add(AUDIO_HEALTH_POTION);
+        this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
+        this.backgroundMusic.play();
 
-            if (window.location.hostname === 'localhost') {
-                this.input.keyboard.on('keydown-H', () => {
-                    this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
-                    this.potions = this.potionSpawner.spawn();
-                    this.physics.add.collider(this.potions, this.platforms);
-                    this.physics.add.collider(this.potions, this.movingPlatforms);
-                    this.physics.add.collider(this.potions, this.skullGroup);
-                    this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
-                }, this);
+        if (window.location.hostname === 'localhost') {
+            this.input.keyboard.on('keydown-H', () => {
+                this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                this.potions = this.potionSpawner.spawn();
+                this.physics.add.collider(this.potions, this.platforms);
+                this.physics.add.collider(this.potions, this.movingPlatforms);
+                this.physics.add.collider(this.potions, this.skullGroup);
+                this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
+            }, this);
 
-                this.input.keyboard.on('keydown-Q', () => {
-                    this.background.changeScene(1)
-                }, this);
+            this.input.keyboard.on('keydown-Q', () => {
+                this.background.changeScene(1)
+            }, this);
 
-                this.input.keyboard.on('keydown-W', () => {
-                    this.background.changeScene(2)
-                }, this);
+            this.input.keyboard.on('keydown-W', () => {
+                this.background.changeScene(2)
+            }, this);
 
-                this.input.keyboard.on('keydown-E', () => {
-                    this.background.changeScene(3)
-                }, this);
+            this.input.keyboard.on('keydown-E', () => {
+                this.background.changeScene(3)
+            }, this);
 
-                this.input.keyboard.on('keydown-R', () => {
-                    this.background.changeScene(4)
-                }, this);
+            this.input.keyboard.on('keydown-R', () => {
+                this.background.changeScene(4)
+            }, this);
 
-                this.input.keyboard.on('keydown-T', () => {
-                    this.background.changeScene(5)
-                }, this);
+            this.input.keyboard.on('keydown-T', () => {
+                this.background.changeScene(5)
+            }, this);
 
-                this.input.keyboard.on('keydown-Y', () => {
-                    this.background.changeScene(6)
-                }, this);
+            this.input.keyboard.on('keydown-Y', () => {
+                this.background.changeScene(6)
+            }, this);
 
-                this.input.keyboard.on('keydown-U', () => {
-                    this.background.changeScene(7)
-                }, this);
+            this.input.keyboard.on('keydown-U', () => {
+                this.background.changeScene(7)
+            }, this);
 
-                this.input.keyboard.on('keydown-I', () => {
-                    this.background.changeScene(8)
-                }, this);
+            this.input.keyboard.on('keydown-I', () => {
+                this.background.changeScene(8)
+            }, this);
 
-                this.input.keyboard.on('keydown-O', () => {
-                    this.background.changeScene(9)
-                }, this);
+            this.input.keyboard.on('keydown-O', () => {
+                this.background.changeScene(9)
+            }, this);
 
-                this.input.keyboard.on('keydown-L', () => {
-                    this.lives += 1;
-                    this.livesLabel.add(1)
-                }, this);
+            this.input.keyboard.on('keydown-L', () => {
+                this.lives += 1;
+                this.livesLabel.add(1)
+            }, this);
 
 
+        }
+
+        this.input.keyboard.on('keydown-M',  () => {
+            this.toggleMusic = !this.toggleMusic;
+            if (this.toggleMusic) { this.backgroundMusic.play(); }
+            else { this.backgroundMusic.stop(); }
+        }, this);
+
+        this.input.keyboard.on('keydown-SPACE',  () => {
+            this.togglePause = !this.togglePause;
+            if (this.togglePause) {
+            this.physics.pause();
+            this.sound.stopAll();
+            }
+            else {
+            this.physics.resume();
+            if (this.toggleMusic) { this.backgroundMusic.play(); }
             }
 
-            this.input.keyboard.on('keydown-M',  () => {
-                this.toggleMusic = !this.toggleMusic;
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-                else { this.backgroundMusic.stop(); }
-            }, this);
-
-            this.input.keyboard.on('keydown-SPACE',  () => {
-                this.togglePause = !this.togglePause;
-                if (this.togglePause) {
-                this.physics.pause();
-                this.sound.stopAll();
-                }
-                else {
-                this.physics.resume();
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-                }
-
-            }, this);
+        }, this);
     }
 
     update()
@@ -411,7 +352,6 @@ export default class GameScene extends Phaser.Scene
         this.lives += 1;
         this.livesLabel.add(1);
         player.setTint(0x00ff00);
-//        player.clearTint(); // reset the red color in case of being hit before
     }
 
     collectCoin(player, coin) {
@@ -514,39 +454,6 @@ export default class GameScene extends Phaser.Scene
                     break;
                 }
             }
-            /*
-            if (this.completedLevels == 1 || this.completedLevels == 4) {
-                this.completedLevels == 1 ? this.background.changeScene(2) : this.background.changeScene(5); 
-                this.backgroundMusic.stop();
-                this.backgroundMusic = this.sound.add('bgmTwo');
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-            }
-            else if (this.completedLevels ==2 || this.completedLevels == 5) {
-                this.completedLevels == 2 ? this.background.changeScene(3) : this.background.changeScene(6); 
-                this.backgroundMusic.stop();
-                this.backgroundMusic = this.sound.add('bgmThree');
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-            }
-            else if (this.completedLevels ==3 || this.completedLevels == 6) {
-                this.completedLevels == 3 ? this.background.changeScene(4) : this.background.changeScene(7); 
-                this.backgroundMusic.stop();
-                this.backgroundMusic = this.sound.add('bgmOne');
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-            }
-            else if (this.completedLevels == 7) {
-                this.background.changeScene(8);
-                this.backgroundMusic.stop();
-                this.backgroundMusic = this.sound.add('bgmTwo');
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-            }
-            else {
-                this.background.changeScene(9);
-                this.backgroundMusic.stop();
-                this.backgroundMusic = this.sound.add('backgroundMusic');
-                if (this.toggleMusic) { this.backgroundMusic.play(); }
-            } */
-
-
 
           if (this.completedLevels === 3) {
               this.movingPlatforms.children.entries[0].enableBody(true, this.movingPlatforms.children.entries[0].x, this.movingPlatforms.children.entries[0].y, true, true);
@@ -585,28 +492,13 @@ export default class GameScene extends Phaser.Scene
             this.gameOverSpawner = new GameOverSpawner(this, GAME_OVER_KEY);
             this.gameOverSpawner.spawn();
             this.physics.pause();
-            this.add.image(600, 400, 'gameover');
             this.gameOver = true;
             if (this.toggleMusic) { this.backgroundMusic.stop(); }
             if (this.toggleMusic) { this.gameOverFunny.play(); }
 
-/*            let auth = await Moralis.Web3.authenticate();
-            const userAddress = auth.get('ethAddress');
-            console.log(userAddress);
-            const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
-            const goodKnightScore = new GoodKnightScore();
-//            goodKnightScore.set("sender_session", moralisUser.id);
-            goodKnightScore.set("sender", userAddress);
-            goodKnightScore.set("score", this.score);
-            console.log(userAddress + " scored " + this.score);
-            let result = await goodKnightScore.save();
-            console.log(goodKnightScore);
-            this.moralisScoreSavedLabel = this.createMoralisScoreSavedLabel(16 ,84, result.id)
- */         
-            setTimeout( () => {
-                this.scene.start('game-over');
-            }, 3000); 
-            
+            //setTimeout( () => {
+                this.scene.start('game-over', {score: this.score});
+            //}, 3000); 
     
         }
         else {
