@@ -441,6 +441,13 @@ export default class GameScene extends Phaser.Scene
                     this.backgroundMusic.stop();
                     this.backgroundMusic = this.sound.add('bgmThree');
                     if (this.toggleMusic) { this.backgroundMusic.play(); }
+
+                    this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                    this.potions = this.potionSpawner.spawn();
+                    this.physics.add.collider(this.potions, this.platforms);
+                    this.physics.add.collider(this.potions, this.movingPlatforms);
+                    this.physics.add.collider(this.potions, this.skullGroup);
+                    this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
                     break;
                 }
                 case 3: {
@@ -462,6 +469,13 @@ export default class GameScene extends Phaser.Scene
                     this.backgroundMusic.stop();
                     this.backgroundMusic = this.sound.add('bgmThree');
                     if (this.toggleMusic) { this.backgroundMusic.play(); }
+
+                    this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                    this.potions = this.potionSpawner.spawn();
+                    this.physics.add.collider(this.potions, this.platforms);
+                    this.physics.add.collider(this.potions, this.movingPlatforms);
+                    this.physics.add.collider(this.potions, this.skullGroup);
+                    this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
                     break;
                 }
                 case 6: {
@@ -483,6 +497,13 @@ export default class GameScene extends Phaser.Scene
                     this.backgroundMusic.stop();
                     this.backgroundMusic = this.sound.add('backgroundMusic');
                     if (this.toggleMusic) { this.backgroundMusic.play(); }
+
+                    this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                    this.potions = this.potionSpawner.spawn();
+                    this.physics.add.collider(this.potions, this.platforms);
+                    this.physics.add.collider(this.potions, this.movingPlatforms);
+                    this.physics.add.collider(this.potions, this.skullGroup);
+                    this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
                     break;
                 }
                 default: {
