@@ -33,5 +33,17 @@ async function postScore() {
     }
 }
 
+async function getNFTs() {
+    try {
+        let user = await Moralis.Web3.authenticate();
+        const userEthNFTs = await Moralis.Web3API.account.getNFTs();
+        document.getElementById('nft-info').value = JSON.stringify(userEthNFTs);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 document.getElementById("login_button").onclick = login;
 document.getElementById("post-score").onclick = postScore;
+document.getElementById("fetch-nfts").onclick = getNFTs;

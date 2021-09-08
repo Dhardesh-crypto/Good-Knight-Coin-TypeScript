@@ -14,6 +14,7 @@ export default class Scene1 extends Phaser.Scene {
     private btnIsLocked! : boolean;
     private btnNFTIsLocked! : boolean;
     private moralisUser!: string;
+    private NFTstring!: string;
     
     constructor() {
       super('welcome')
@@ -23,7 +24,10 @@ export default class Scene1 extends Phaser.Scene {
       this.btnIsLocked = false;
       this.btnNFTIsLocked = true;
       this.moralisUser = data.moralisUser;
+      this.NFTstring = data.NFTstring;
       console.log('Init welcome ' + this.moralisUser);
+      console.log('Init welcome NFTs ' + this.NFTstring);
+
     }
 
     preload() {
@@ -60,8 +64,15 @@ export default class Scene1 extends Phaser.Scene {
           })
       } else {
         this.buttonLoadNFT.setInteractive()
-          .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            alert('This functionality will be implemented in the near future.');
+          .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, async () => {
+            window.document.getElementById('fetch-nfts')?.click();
+               setTimeout( () => {
+                 console.log('NFTstring = ' + window.document.getElementById('nft-info').value);
+                this.NFTstring = window.document.getElementById('nft-info').value;
+                if (this.NFTstring) {
+                  console.log('NFTstring', this.NFTstring);
+                }
+              }, 10000); 
           })
 
       }

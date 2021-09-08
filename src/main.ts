@@ -15,15 +15,9 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-          /*  gravity: { y: 300 }, */
             debug: false
         }
     },
-/*    plugins: {
-        global: [
-            { key: 'RpgCharacterPlugin', plugin: RpgCharacterPlugin, start: true }
-        ]
-    }, */
 	scene: [
         Welcome, 
         GoodKnightCoinScene, 
