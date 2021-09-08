@@ -1,5 +1,4 @@
 import CustomButton from "./CustomButton";
-// import Moralis from 'moralis' // comment out in case of bad build
 
 const BUTTON_NORMAL = 'buttonNormal';
 const BUTTON_HOVER = 'buttonHover';
@@ -7,21 +6,22 @@ const BUTTON_CLICKED = 'buttonClicked';
 const BUTTON_LOCKED = 'buttonLocked';
 const CONGRATULATIONS = 'congratulations';
 
-// connect to Moralis server
-//Moralis.initialize("iXrIAo95USwRZUbHFzS3CIvD2iGezWbYrZWVjZFC");
-//Moralis.serverURL = "https://6vsvjpvchvem.bigmoralis.com:2053/server";
-
-
 export default class CongratulationsScene extends Phaser.Scene 
 {
 
   private buttonSubmit! : CustomButton;
   private buttonPlay! : CustomButton;
   private gameOver! : boolean;
+  private moralisUser!: string;
 
   constructor() 
   {
     super('congratulations');
+  }
+
+  init(data) {
+    this.moralisUser = data.moralisUser;
+    console.log('Init congratulations ' + this.moralisUser);
   }
 
   preload() {
@@ -48,19 +48,8 @@ export default class CongratulationsScene extends Phaser.Scene
          
           this.add.existing(this.buttonSubmit);
           this.buttonSubmit.setInteractive()
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, /* async */ () => {
-              alert('Still a work in progress...\nComing to a theatre near you soon...');
-/*              let auth = await Moralis.Web3.authenticate();
-              const userAddress = auth.get('ethAddress');
-              console.log(userAddress);
-              const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
-              const goodKnightScore = new GoodKnightScore();
-              goodKnightScore.set("sender", userAddress);
-              goodKnightScore.set("score", 1500);
-              console.log(userAddress + " scored " + 1500);
-              let result = await goodKnightScore.save();
-              console.log(goodKnightScore); 
-*/
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+              window.document.getElementById('post-score')?.click();
             })
   
 

@@ -93,13 +93,14 @@ export default class GameScene extends Phaser.Scene
     private togglePause! : boolean;
     private gameOver! : boolean;
     private movingPlatformDirection! : string;
+    private moralisUser!: string;
 
     constructor() 
     {
         super('game-scene');
     }
 
-    init() {
+    init(data) {
         const style = { fontSize: '32px', fill: '#fff' }
         this.add.text(100, 100, 'loading...', style);
         this.score = 0;
@@ -112,6 +113,8 @@ export default class GameScene extends Phaser.Scene
         this.jumpHeight = -400;
         this.movementSpeed = 160; // 160
         this.gameOver = false;
+        this.moralisUser = data.moralisUser;
+        console.log(this.moralisUser);
     }
 
     preload()
@@ -362,7 +365,7 @@ export default class GameScene extends Phaser.Scene
         player.clearTint(); // reset the red color in case of being hit before
 
         if (this.score === 1500) {
-            this.scene.start('congratulations');
+            this.scene.start('congratulations', { moralisUser: this.moralisUser});
         }
 
         if (this.coins.countActive(true) == 0) {
@@ -499,6 +502,7 @@ export default class GameScene extends Phaser.Scene
             //setTimeout( () => {
                 this.scene.start('game-over', {score: this.score});
             //}, 3000); 
+
     
         }
         else {

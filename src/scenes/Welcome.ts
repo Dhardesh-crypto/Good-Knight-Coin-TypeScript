@@ -13,14 +13,17 @@ export default class Scene1 extends Phaser.Scene {
     private welcomeText! : Phaser.GameObjects.Text;
     private btnIsLocked! : boolean;
     private btnNFTIsLocked! : boolean;
+    private moralisUser!: string;
     
     constructor() {
       super('welcome')
     }
 
-    init() {
+    init(data) {
       this.btnIsLocked = false;
       this.btnNFTIsLocked = true;
+      this.moralisUser = data.moralisUser;
+      console.log('Init welcome ' + this.moralisUser);
     }
 
     preload() {
@@ -44,7 +47,7 @@ export default class Scene1 extends Phaser.Scene {
       if (!this.btnIsLocked) {
         this.buttonPlay.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('game-scene');
+            this.scene.start('game-scene',  {moralisUser: this.moralisUser});
           })
       }
 

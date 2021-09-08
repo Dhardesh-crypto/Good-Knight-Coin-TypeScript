@@ -18,7 +18,6 @@ export default class CustomButton extends Phaser.GameObjects.Container {
         this.downImage = this.scene.add.image(0,0, downTexture);
         this.lockedImage = this.scene.add.image(0,0, lockedTexture);
         this.text = this.scene.add.text(0, 0, caption, style).setOrigin(0.5);
-        console.log(caption);
 
         this.add(this.upImage);
         this.add(this.overImage);
