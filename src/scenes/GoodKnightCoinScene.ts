@@ -84,23 +84,28 @@ export default class GameScene extends Phaser.Scene
     private playerJump! : Phaser.Sound.BaseSound;
     private drinkPotion! : Phaser.Sound.BaseSound;
     private backgroundMusic! : Phaser.Sound.BaseSound;
-    private jumpHeight!: integer;
-    private movementSpeed! : integer;
-    private score! : integer;
-    private lives!: integer;
-    private completedLevels!: integer;
-    private toggleMusic! : boolean;
-    private togglePause! : boolean;
-    private gameOver! : boolean;
+    private jumpHeight: integer = -400;
+    private movementSpeed : integer = 160;
+    private score : integer = 0;
+    private lives : integer = 2;
+    private completedLevels: integer = 0;
+    private toggleMusic : boolean = true;
+    private togglePause : boolean = false;
+    private gameOver : boolean = false;
     private movingPlatformDirection! : string;
     private moralisUser!: string;
-
+    private bExtraJump: boolean = false;
+    private bExtraProtect: boolean = false;
+    private bExtraSpeed: boolean = false;
+    private bExtraHealthPotions: boolean = false;
+    private bExtraSword: boolean = false;
     constructor() 
     {
         super('game-scene');
     }
 
     init(data) {
+        console.log('[GAME-SCENE] data: ', data);
         const style = { fontSize: '32px', fill: '#fff' }
         this.add.text(100, 100, 'loading...', style);
         this.score = 0;
@@ -110,11 +115,16 @@ export default class GameScene extends Phaser.Scene
         this.completedLevels = 0;
 
         this.movingPlatformDirection = '';
-        this.jumpHeight = -400;
-        this.movementSpeed = 160; // 160
         this.gameOver = false;
         this.moralisUser = data.moralisUser;
-        console.log(this.moralisUser);
+        this.bExtraJump = data.bExtraJump;
+        this.bExtraProtect = data.bExtraProtect;
+        this.bExtraSpeed = data.bExtraSpeed;
+        this.bExtraHealthPotions = data.bExtraHealthPotions;
+        this.bExtraSword = data.bExtraSword;
+
+        this.jumpHeight = (this.bExtraJump === true) ? -600 : -400;
+        this.movementSpeed = (this.bExtraSpeed === true) ? 240 : 160;
     }
 
     preload()
@@ -213,6 +223,17 @@ export default class GameScene extends Phaser.Scene
         this.drinkPotion = this.sound.add(AUDIO_HEALTH_POTION);
         this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
         this.backgroundMusic.play();
+
+        if (this.bExtraHealthPotions) {
+            for (var i = 0; i < 5; i++){
+                this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
+                this.potions = this.potionSpawner.spawn();
+                this.physics.add.collider(this.potions, this.platforms);
+                this.physics.add.collider(this.potions, this.movingPlatforms);
+                this.physics.add.collider(this.potions, this.skullGroup);
+                this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
+            }
+        }
 
         if (window.location.hostname === 'localhost') {
             this.input.keyboard.on('keydown-H', () => {
@@ -347,6 +368,10 @@ export default class GameScene extends Phaser.Scene
             if (this.toggleMusic) { this.playerJump.play(); }
             this.player.setVelocityY(this.jumpHeight);
         }
+        else if (this.bExtraJump && this.cursors.down.isDown)
+        {
+            this.player.setVelocityY(-this.jumpHeight*0.5);
+        }
 	}
 
     collectPotion(player, potion) {
@@ -365,7 +390,15 @@ export default class GameScene extends Phaser.Scene
         player.clearTint(); // reset the red color in case of being hit before
 
         if (this.score === 1500) {
-            this.scene.start('congratulations', { moralisUser: this.moralisUser});
+            this.scene.start('congratulations', 
+                { moralisUser: this.moralisUser, 
+                    bExtraJump: this.bExtraJump,
+                    bExtraProtect: this.bExtraProtect,
+                    bExtraSpeed: this.bExtraSpeed,
+                    bExtraHealthPotions: this.bExtraHealthPotions,
+                    bExtraSword: this.bExtraSword
+                }
+            );
         }
 
         if (this.coins.countActive(true) == 0) {
@@ -500,7 +533,16 @@ export default class GameScene extends Phaser.Scene
             if (this.toggleMusic) { this.gameOverFunny.play(); }
 
             //setTimeout( () => {
-                this.scene.start('game-over', {score: this.score});
+                this.scene.start('game-over', 
+                    {
+                        score: this.score,
+                        moralisUser: this.moralisUser, 
+                        bExtraJump: this.bExtraJump,
+                        bExtraProtect: this.bExtraProtect,
+                        bExtraSpeed: this.bExtraSpeed,
+                        bExtraHealthPotions: this.bExtraHealthPotions,
+                        bExtraSword: this.bExtraSword
+                    });
             //}, 3000); 
 
     

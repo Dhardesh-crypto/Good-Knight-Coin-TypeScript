@@ -18,7 +18,18 @@ export default class NFTSettingsScene extends Phaser.Scene {
     private nftArray!: any;
     private nftNames: string[] = [];
     private buttonClose! : Phaser.GameObjects.Container;
+    private buttonEquip1! : Phaser.GameObjects.Container;
+    private buttonEquip2! : Phaser.GameObjects.Container;
+    private buttonEquip3! : Phaser.GameObjects.Container;
+    private buttonEquip4! : Phaser.GameObjects.Container;
+    private buttonEquip5! : Phaser.GameObjects.Container;
+
     private moralisUser! : string;
+    private bExtraJump: boolean = false;
+    private bExtraProtect: boolean = false;
+    private bExtraSpeed: boolean = false;
+    private bExtraHealthPotions: boolean = false;
+    private bExtraSword: boolean = false;
 
     constructor() {
         super('set-nfts-scene');
@@ -26,9 +37,13 @@ export default class NFTSettingsScene extends Phaser.Scene {
       }
 
     init(data) {
-      this.NFTstring = data.NFTstring;
-      this.moralisUser = data.moralisUser;
-      //console.log('INIT Set NFT ', JSON.parse(this.NFTstring));
+        console.log('[SET-NFT-SCENE] data: ', data);
+        this.moralisUser = data.moralisUser;
+        this.bExtraJump = data.bExtraJump;
+        this.bExtraProtect = data.bExtraProtect;
+        this.bExtraSpeed = data.bExtraSpeed;
+        this.bExtraHealthPotions = data.bExtraHealthPotions;
+        this.bExtraSword = data.bExtraSword;
     }
 
     preload() {
@@ -84,21 +99,27 @@ export default class NFTSettingsScene extends Phaser.Scene {
        
           this.buttonClose.setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-              this.scene.start('welcome',  {moralisUser: this.moralisUser});
+              this.scene.start('welcome',  
+                { moralisUser: this.moralisUser, 
+                    bExtraJump: this.bExtraJump,
+                    bExtraProtect: this.bExtraProtect,
+                    bExtraSpeed: this.bExtraSpeed,
+                    bExtraHealthPotions: this.bExtraHealthPotions,
+                    bExtraSword: this.bExtraSword
+                });
             });
   
-        const nft1 = this.add.image(375, 100, NFT_ONE_KEY).setScale(0.3).setDepth(1);
-        const nft2 = this.add.image(375, 250, NFT_TWO_KEY).setScale(0.3).setDepth(1);
-        const nft3 = this.add.image(375, 400, NFT_THREE_KEY).setScale(0.3).setDepth(1);
-        const nft4 = this.add.image(375, 550, NFT_FOUR_KEY).setScale(0.3).setDepth(1);
-        const nft5 = this.add.image(375, 700, NFT_FIVE_KEY).setScale(0.3).setDepth(1);
-/*        console.log('===============================================================================================================================================================');
-        console.log('NFT Names = ', this.nftNames);
-        console.log('===============================================================================================================================================================');
-        for (var i = 0; i < this.nftNames.length; i++) {
-            this.add.image(50, 100 +i*100, this.nftNames[i]).setScale(0.1);
-        } 
-*/
+        const nft1 = this.add.image(375, 100, NFT_ONE_KEY).setScale(0.3).setDepth(1); // KnightFlight, this.bExtraJump
+        (this.bExtraJump === true) ? nft1.setTint(0x00ff00) : nft1.clearTint();
+        const nft2 = this.add.image(375, 250, NFT_TWO_KEY).setScale(0.3).setDepth(1); // KnightProtect, this.bExtraProtect
+        (this.bExtraProtect === true) ? nft2.setTint(0x00ff00) : nft2.clearTint();
+        const nft3 = this.add.image(375, 400, NFT_THREE_KEY).setScale(0.3).setDepth(1); // KnightSpeed, this.bExtraSpeed
+        (this.bExtraSpeed === true) ? nft3.setTint(0x00ff00) : nft3.clearTint();
+        const nft4 = this.add.image(375, 550, NFT_FOUR_KEY).setScale(0.3).setDepth(1); // KnightLife, this.bExtraHealthPotions
+        (this.bExtraHealthPotions === true) ? nft4.setTint(0x00ff00) : nft4.clearTint();
+        const nft5 = this.add.image(375, 700, NFT_FIVE_KEY).setScale(0.3).setDepth(1); // KnightNight, this.bExtraSword
+        (this.bExtraSword === true) ? nft5.setTint(0x00ff00) : nft5.clearTint();
+
         nft1.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
                     nft1.setScale(0.6);
@@ -112,6 +133,10 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft1.setY(100);
                     nft1.setDepth(1);
                 })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.bExtraJump = !this.bExtraJump;
+                    (this.bExtraJump === true) ? nft1.setTint(0x00ff00) : nft1.clearTint();
+                });
 
         nft2.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
@@ -127,6 +152,11 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft2.setY(250);
                     nft2.setDepth(1);
                 })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.bExtraProtect = !this.bExtraProtect;
+                    (this.bExtraProtect === true) ? nft2.setTint(0x00ff00) : nft2.clearTint();
+                });
+
 
         nft3.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
@@ -141,6 +171,11 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft3.setY(400);
                     nft3.setDepth(1);
                 })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.bExtraSpeed = !this.bExtraSpeed;
+                    (this.bExtraSpeed === true) ? nft3.setTint(0x00ff00) : nft3.clearTint();
+                });
+
 
         nft4.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
@@ -155,6 +190,11 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft4.setY(550);
                     nft4.setDepth(1);
                 })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.bExtraHealthPotions = !this.bExtraHealthPotions;
+                    (this.bExtraHealthPotions === true) ? nft4.setTint(0x00ff00) : nft4.clearTint();
+                });
+
 
         nft5.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
@@ -169,6 +209,11 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft5.setY(700);
                     nft5.setDepth(1);
                 })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.bExtraSword = !this.bExtraSword;
+                    (this.bExtraSword === true) ? nft5.setTint(0x00ff00) : nft5.clearTint();
+                });
+
 
     }
 

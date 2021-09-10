@@ -10,13 +10,24 @@ export default class RulesScene extends Phaser.Scene {
     private background! : Phaser.GameObjects.Image;
     private buttonClose! : Phaser.GameObjects.Container;
     private moralisUser! : string;
+    private bExtraJump: boolean = false;
+    private bExtraProtect: boolean = false;
+    private bExtraSpeed: boolean = false;
+    private bExtraHealthPotions: boolean = false;
+    private bExtraSword: boolean = false;
     
     constructor() {
       super('rules')
     }
 
     init(data) {
+        console.log('[RULES] data: ', data);
         this.moralisUser = data.moralisUser;
+        this.bExtraJump = data.bExtraJumo;
+        this.bExtraProtect = data.bExtraProtect;
+        this.bExtraSpeed = data.bExtraSpeed;
+        this.bExtraHealthPotions = data.bExtraHealthPotions;
+        this.bExtraSword = data.bExtraSword;
     }
 
     preload() {
@@ -36,7 +47,14 @@ export default class RulesScene extends Phaser.Scene {
      
         this.buttonClose.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('welcome',  {moralisUser: this.moralisUser});
+            this.scene.start('welcome',   { moralisUser: this.moralisUser, 
+                bExtraJump: this.bExtraJump,
+                bExtraProtect: this.bExtraProtect,
+                bExtraSpeed: this.bExtraSpeed,
+                bExtraHealthPotions: this.bExtraHealthPotions,
+                bExtraSword: this.bExtraSword
+              }
+            );
           });
      
     }

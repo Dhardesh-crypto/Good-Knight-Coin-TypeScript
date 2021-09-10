@@ -15,20 +15,26 @@ export default class Scene1 extends Phaser.Scene {
     private btnIsLocked! : boolean;
     private btnNFTIsLocked! : boolean;
     private moralisUser!: string;
-    private NFTstring!: string;
+    private bExtraJump: boolean = false; // false;
+    private bExtraProtect: boolean = false; // false
+    private bExtraSpeed: boolean = false; // false;
+    private bExtraHealthPotions: boolean = false; // false;
+    private bExtraSword: boolean = false; // false
     
     constructor() {
       super('welcome')
     }
 
     init(data) {
+      console.log('[WELCOME] data: ', data);
       this.btnIsLocked = false;
       this.btnNFTIsLocked = false;
       this.moralisUser = data.moralisUser;
-      this.NFTstring = data.NFTstring;
-      console.log('Init welcome ' + this.moralisUser);
-      console.log('Init welcome NFTs ' + this.NFTstring);
-
+      this.bExtraJump = (data.bExtraJump) ? data.bExtraJump : this.bExtraJump;
+      this.bExtraProtect = (data.bExtraProtect) ? data.bExtraProtect : this.bExtraProtect;
+      this.bExtraSpeed = (data.bExtraSpeed) ? data.bExtraSpeed : this.bExtraSpeed;
+      this.bExtraHealthPotions = (data.bExtraHealthPotions) ? data.bExtraHealthPotions : this.bExtraHealthPotions;
+      this.bExtraSword = (data.bExtraSword) ? data.bExtraSword : this.bExtraSword;
     }
 
     preload() {
@@ -52,7 +58,15 @@ export default class Scene1 extends Phaser.Scene {
       if (!this.btnIsLocked) {
         this.buttonPlay.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('game-scene',  {moralisUser: this.moralisUser});
+            this.scene.start('game-scene',  
+              { moralisUser: this.moralisUser, 
+                bExtraJump: this.bExtraJump,
+                bExtraProtect: this.bExtraProtect,
+                bExtraSpeed: this.bExtraSpeed,
+                bExtraHealthPotions: this.bExtraHealthPotions,
+                bExtraSword: this.bExtraSword
+              }
+            );
           })
       }
 
@@ -61,7 +75,15 @@ export default class Scene1 extends Phaser.Scene {
       
       this.buttonRules.setInteractive()
         .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-          this.scene.start('rules',  {moralisUser: this.moralisUser});
+          this.scene.start('rules',  
+            { moralisUser: this.moralisUser, 
+              bExtraJump: this.bExtraJump,
+              bExtraProtect: this.bExtraProtect,
+              bExtraSpeed: this.bExtraSpeed,
+              bExtraHealthPotions: this.bExtraHealthPotions,
+              bExtraSword: this.bExtraSword
+            }
+          );
         })
       
 
@@ -71,7 +93,15 @@ export default class Scene1 extends Phaser.Scene {
         this.buttonLoadNFT.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
          //   window.document.getElementById('fetch-nfts')?.click();
-            this.scene.start('set-nfts-scene', { NFTstring: this.NFTstring});
+            this.scene.start('set-nfts-scene', 
+            { moralisUser: this.moralisUser, 
+              bExtraJump: this.bExtraJump,
+              bExtraProtect: this.bExtraProtect,
+              bExtraSpeed: this.bExtraSpeed,
+              bExtraHealthPotions: this.bExtraHealthPotions,
+              bExtraSword: this.bExtraSword
+            }
+          );
 /*            setTimeout( () => {
              this.NFTstring = window.document.getElementById('nft-info').value;
              if (this.NFTstring) {

@@ -21,7 +21,12 @@ export default class GameOverScene extends Phaser.Scene {
     private livesLabel! : LivesLabel;
     private scoreBackground! : Phaser.GameObjects.Image;
     private livesBackground! : Phaser.GameObjects.Image;
-
+    private moralisUser! : string;
+    private bExtraJump! : boolean;
+    private bExtraProtect! : boolean;
+    private bExtraSpeed! : boolean;
+    private bExtraHealthPotions! : boolean;
+    private bExtraSword! : boolean;
 
     constructor() {
         super('game-over');
@@ -29,8 +34,14 @@ export default class GameOverScene extends Phaser.Scene {
       }
 
     init(data) {
-      console.log(data);
+      console.log('[GAME-OVER] data: ', data);
       this.finalScore = data.score;
+      this.moralisUser = data.moralisUser;
+      this.bExtraJump = data.bExtraJump;
+      this.bExtraProtect = data.bExtraProtect;
+      this.bExtraSpeed = data.bExtraSpeed;
+      this.bExtraHealthPotions = data.bExtraHealthPotions;
+      this.bExtraSword = data.bExtraSword;
     }
 
     preload() {
@@ -58,7 +69,15 @@ export default class GameOverScene extends Phaser.Scene {
         this.add.existing(this.buttonPlay);
         this.buttonPlay.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            location.reload();
+            this.scene.start('welcome', 
+              {
+                moralisUser: this.moralisUser, 
+                bExtraJump: this.bExtraJump,
+                bExtraProtect: this.bExtraProtect,
+                bExtraSpeed: this.bExtraSpeed,
+                bExtraHealthPotions: this.bExtraHealthPotions,
+                bExtraSword: this.bExtraSword
+              });
           })
 
         this.input.keyboard.on('keydown-SPACE',  () => {
