@@ -48,7 +48,7 @@ export default class Scene1 extends Phaser.Scene {
     create() {
       this.background = this.add.image(633, 800, SPLASHSCREEN_KEY).setScale(0.625).setOrigin(0,1);
       const style = { fontSize: '32px', fill: '#fff' }
-      this.welcomeText = this.add.text(50, 330, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
+      this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
 
       const styleSmall = { fontSize: '16px', fill: '#fff' };
       this.add.text (50, 680, 'Left: <LEFT>\nRight: <RIGHT>\nJump: <UP>\nToggle music: <M>\nPause game: <SPACE>\nEnd game:<ESC>');
