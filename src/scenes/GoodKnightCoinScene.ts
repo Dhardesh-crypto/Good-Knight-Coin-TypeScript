@@ -7,6 +7,7 @@ import MovingPlatformSpawner from './MovingPlatformSpawner'
 import CoinSpawner from './CoinSpawner'
 import ScoreLabel from '../ui/ScoreLabel'
 import LivesLabel from '../ui/LivesLabel'
+import ProtectLabel from '../ui/ProtectLabel'
 import SkullSpawner from './SkullSpawner'
 import HealthPotionSpawner from './HealthPotionSpawner'
 import GameOverSpawner from './GameOverSpawner'
@@ -24,6 +25,7 @@ const BACKGROUND8_KEY = 'background8';
 const BACKGROUND9_KEY = 'background9';
 const SCORE_BACKGROUND_KEY = 'scoreBackground';
 const LIVES_BACKGROUND_KEY = 'livesBackground';
+const PROTECT_BACKGROUND_KEY = 'protectBackground';
 const GROUND_KEY = 'ground';
 const GROUND_LEFT_KEY = 'groundLeft';
 const GROUND_RIGHT_KEY = 'groundRight';
@@ -60,6 +62,7 @@ export default class GameScene extends Phaser.Scene
     private background9! : Phaser.GameObjects.Image;
     private scoreBackground! : Phaser.GameObjects.Image;
     private livesBackground! : Phaser.GameObjects.Image;
+    private protectBackground! : Phaser.GameObjects.Image;
     private platformSpawner! : PlatformSpawner;
     private platforms! : Phaser.Physics.Arcade.StaticGroup;
     private movingPlatformSpawner! : MovingPlatformSpawner;
@@ -76,6 +79,7 @@ export default class GameScene extends Phaser.Scene
     private cursors! : Phaser.Types.Input.Keyboard.CursorKeys;
     private livesLabel! : LivesLabel;
     private scoreLabel! : ScoreLabel;
+    private protectLabel! : ProtectLabel;
     private moralisScoreSavedLabel! : MoralisScoreSavedLabel;
     private coinCollect! : Phaser.Sound.BaseSound;
     private skullHit! : Phaser.Sound.BaseSound;
@@ -88,6 +92,7 @@ export default class GameScene extends Phaser.Scene
     private movementSpeed : integer = 160;
     private score : integer = 0;
     private lives : integer = 2;
+    private protect : integer = 0;
     private completedLevels: integer = 0;
     private toggleMusic : boolean = true;
     private togglePause : boolean = false;
@@ -125,6 +130,7 @@ export default class GameScene extends Phaser.Scene
 
         this.jumpHeight = (this.bExtraJump === true) ? -600 : -400;
         this.movementSpeed = (this.bExtraSpeed === true) ? 240 : 160;
+        this.protect = (this.bExtraProtect === true) ? 5 : 0;
     }
 
     preload()
@@ -140,6 +146,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image(BACKGROUND9_KEY, 'assets/9.png');
         this.load.image(SCORE_BACKGROUND_KEY, 'assets/Score_Background.png');
         this.load.image(LIVES_BACKGROUND_KEY, 'assets/Lives_Background.png');
+        this.load.image(PROTECT_BACKGROUND_KEY, 'assets/Protect_Background.png');
         this.load.image(GROUND_KEY, 'assets/Tile (2).png');
         this.load.image(GROUND_LEFT_KEY, 'assets/Tile (1).png');
         this.load.image(GROUND_RIGHT_KEY, 'assets/Tile (3).png');
@@ -179,6 +186,7 @@ export default class GameScene extends Phaser.Scene
         this.add.existing(this.background);
         this.scoreBackground = this.add.image(80,33, SCORE_BACKGROUND_KEY).setScale(0.4);
         this.livesBackground = this.add.image(80,83, LIVES_BACKGROUND_KEY).setScale(0.4);
+        this.protectBackground = this.add.image(80,133, PROTECT_BACKGROUND_KEY).setScale(0.4);
 
         this.platformSpawner = new PlatformSpawner(this, GROUND_KEY, GROUND_LEFT_KEY, GROUND_RIGHT_KEY);
         this.platforms = this.platformSpawner.spawn();
@@ -206,6 +214,7 @@ export default class GameScene extends Phaser.Scene
 
         this.scoreLabel = this.createScoreLabel(63, 16, this.score);
         this.livesLabel = this.createLivesLabel(63, 67, this.lives);
+        this.protectLabel = this.createProtectLabel(63, 118, this.protect);
 
         this.skullSpawner = new SkullSpawner(this, SKULL_KEY);
         this.skullGroup = this.skullSpawner.group;
@@ -497,10 +506,17 @@ export default class GameScene extends Phaser.Scene
             this.skullHit.play(); 
         }
         this.physics.pause();
-        this.player.setTint(0xff0000);
-        this.lives = this.lives -1;
+        if (this.protect > 0) {
+            this.player.setTint(0x0000ff);
+            this.protect = this.protect -1;
+            this.protectLabel.subtract(1);
+    
+        } else {
+            this.player.setTint(0xff0000);
+            this.lives = this.lives -1;
+            this.livesLabel.subtract(1)    
+        }
         skull.disableBody(true, true);
-        this.livesLabel.subtract(1)
         if (this.lives == 0) {
             this.gameOverSpawner = new GameOverSpawner(this, GAME_OVER_KEY);
             this.gameOverSpawner.spawn();
@@ -536,6 +552,16 @@ export default class GameScene extends Phaser.Scene
 	{
 		const style = { fontSize: '32px', fill: '#fff' }
 		const label = new ScoreLabel(this, x, y, score, style)
+
+		this.add.existing(label)
+
+		return label
+	}
+
+    createProtectLabel(x, y, protect)
+	{
+		const style = { fontSize: '32px', fill: '#fff' }
+		const label = new ProtectLabel(this, x, y, protect, style)
 
 		this.add.existing(label)
 
