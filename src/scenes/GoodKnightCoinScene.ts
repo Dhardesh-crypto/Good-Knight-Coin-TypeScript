@@ -43,6 +43,7 @@ const AUDIO_MISSION_COMPLETE = 'missionComplete';
 const AUDIO_GAME_OVER = 'gameOverFunny';
 const AUDIO_PLAYER_JUMP = 'playerJump';
 const AUDIO_HEALTH_POTION = 'drinkPotion';
+const AUDIO_PROTECT = 'protect';
 const AUDIO_BACKGROUND_MUSIC = 'backgroundMusic';
 const AUDIO_BACKGROUND_MUSIC_ONE = 'bgmOne';
 const AUDIO_BACKGROUND_MUSIC_TWO = 'bgmTwo';
@@ -87,6 +88,7 @@ export default class GameScene extends Phaser.Scene
     private gameOverFunny! : Phaser.Sound.BaseSound;
     private playerJump! : Phaser.Sound.BaseSound;
     private drinkPotion! : Phaser.Sound.BaseSound;
+    private protectSound! : Phaser.Sound.BaseSound;
     private backgroundMusic! : Phaser.Sound.BaseSound;
     private jumpHeight: integer = -400;
     private movementSpeed : integer = 160;
@@ -169,6 +171,7 @@ export default class GameScene extends Phaser.Scene
         this.load.audio(AUDIO_GAME_OVER, [ 'assets/GameOverFunny.mp3', 'assets/GameOverFunny.mp3']);
         this.load.audio(AUDIO_PLAYER_JUMP, [ 'assets/playerJump.wav', 'assets/playerJump.wav' ]);
         this.load.audio(AUDIO_HEALTH_POTION, [ 'assets/HealthPotion.wav', 'assets/HealthPotion.wav' ]);
+        this.load.audio(AUDIO_PROTECT, [ 'assets/protect.wav', 'assets/protect.wav' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC, [ 'assets/BackgroundMusic.mp3', 'assets/BackgroundMusic.mp3' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC_ONE, [ 'assets/BGMSuperDuper.mp3', 'assets/BGMSuperDuper.mp3' ]);
         this.load.audio(AUDIO_BACKGROUND_MUSIC_TWO, [ 'assets/BGMBreakingPoint.mp3', 'assets/BGMBreakingPoint.mp3' ]);
@@ -230,6 +233,7 @@ export default class GameScene extends Phaser.Scene
         this.gameOverFunny = this.sound.add(AUDIO_GAME_OVER);
         this.playerJump = this.sound.add(AUDIO_PLAYER_JUMP);
         this.drinkPotion = this.sound.add(AUDIO_HEALTH_POTION);
+        this.protectSound = this.sound.add(AUDIO_PROTECT);
         this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
         this.backgroundMusic.play();
 
@@ -502,8 +506,13 @@ export default class GameScene extends Phaser.Scene
     /* async */ hitSkull(player, skull)
     {
         // console.log(this);
-        if (this.toggleMusic) { 
-            this.skullHit.play(); 
+        if (this.toggleMusic) {
+            if (this.protect > 0) {
+                this.protectSound.play(); 
+            } 
+            else {
+                this.skullHit.play(); 
+            }
         }
         this.physics.pause();
         if (this.protect > 0) {
