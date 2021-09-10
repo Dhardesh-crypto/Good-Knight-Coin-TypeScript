@@ -245,49 +245,26 @@ export default class GameScene extends Phaser.Scene
                 this.physics.add.overlap(this.player, this.potions, this.collectPotion, undefined, this);    
             }, this);
 
-            this.input.keyboard.on('keydown-Q', () => {
-                this.background.changeScene(1)
-            }, this);
-
-            this.input.keyboard.on('keydown-W', () => {
-                this.background.changeScene(2)
-            }, this);
-
-            this.input.keyboard.on('keydown-E', () => {
-                this.background.changeScene(3)
-            }, this);
-
-            this.input.keyboard.on('keydown-R', () => {
-                this.background.changeScene(4)
-            }, this);
-
-            this.input.keyboard.on('keydown-T', () => {
-                this.background.changeScene(5)
-            }, this);
-
-            this.input.keyboard.on('keydown-Y', () => {
-                this.background.changeScene(6)
-            }, this);
-
-            this.input.keyboard.on('keydown-U', () => {
-                this.background.changeScene(7)
-            }, this);
-
-            this.input.keyboard.on('keydown-I', () => {
-                this.background.changeScene(8)
-            }, this);
-
-            this.input.keyboard.on('keydown-O', () => {
-                this.background.changeScene(9)
-            }, this);
-
             this.input.keyboard.on('keydown-L', () => {
                 this.lives += 1;
                 this.livesLabel.add(1)
             }, this);
 
-
         }
+
+        this.input.keyboard.on('keydown-ESC',  () => {
+            this.backgroundMusic.stop();
+            this.scene.start('game-over', 
+                {   score: this.score,
+                    moralisUser: this.moralisUser, 
+                    bExtraJump: this.bExtraJump,
+                    bExtraProtect: this.bExtraProtect,
+                    bExtraSpeed: this.bExtraSpeed,
+                    bExtraHealthPotions: this.bExtraHealthPotions,
+                    bExtraSword: this.bExtraSword
+                }
+            );
+        }, this);
 
         this.input.keyboard.on('keydown-M',  () => {
             this.toggleMusic = !this.toggleMusic;

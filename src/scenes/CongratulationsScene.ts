@@ -63,7 +63,7 @@ export default class CongratulationsScene extends Phaser.Scene
               });
           })
 
-          this.buttonSubmit = new CustomButton(this, 250, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'CLAIM EXBR', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+          this.buttonSubmit = new CustomButton(this, 85, 150, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'CLAIM EXBR', { fontSize: '48px', fill: '#000' }).setScale(0.4);
          
           this.add.existing(this.buttonSubmit);
           this.buttonSubmit.setInteractive()
