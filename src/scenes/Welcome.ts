@@ -70,13 +70,14 @@ export default class Scene1 extends Phaser.Scene {
       if (!this.btnNFTIsLocked) {
         this.buttonLoadNFT.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            window.document.getElementById('fetch-nfts')?.click();
-            setTimeout( () => {
+         //   window.document.getElementById('fetch-nfts')?.click();
+            this.scene.start('set-nfts-scene', { NFTstring: this.NFTstring});
+/*            setTimeout( () => {
              this.NFTstring = window.document.getElementById('nft-info').value;
              if (this.NFTstring) {
                this.scene.start('set-nfts-scene', { NFTstring: this.NFTstring});
              }
-           }, 10000); 
+           }, 10000); */
 
           })
       }

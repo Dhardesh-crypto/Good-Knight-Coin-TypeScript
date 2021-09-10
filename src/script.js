@@ -38,6 +38,10 @@ async function getNFTs() {
         let user = await Moralis.Web3.authenticate();
         const userEthNFTs = await Moralis.Web3API.account.getNFTs();
         document.getElementById('nft-info').value = JSON.stringify(userEthNFTs);
+
+        const options = { addresses: "0x3df128ee3860d4ba9112b7edefa790c9492ecd2e" };
+        const tokenMetadata = await Moralis.Web3API.token.getTokenMetadata(options);
+        console,log(tokenMetadata);
     }
     catch (error) {
         console.log(error);
