@@ -10,6 +10,7 @@ export default class Scene1 extends Phaser.Scene {
     private background! : Phaser.GameObjects.Image;
     private buttonPlay! : Phaser.GameObjects.Container;
     private buttonLoadNFT! : Phaser.GameObjects.Container;
+    private buttonRules! : Phaser.GameObjects.Container;
     private welcomeText! : Phaser.GameObjects.Text;
     private btnIsLocked! : boolean;
     private btnNFTIsLocked! : boolean;
@@ -22,7 +23,7 @@ export default class Scene1 extends Phaser.Scene {
 
     init(data) {
       this.btnIsLocked = false;
-      this.btnNFTIsLocked = true;
+      this.btnNFTIsLocked = false;
       this.moralisUser = data.moralisUser;
       this.NFTstring = data.NFTstring;
       console.log('Init welcome ' + this.moralisUser);
@@ -55,26 +56,29 @@ export default class Scene1 extends Phaser.Scene {
           })
       }
 
-      this.buttonLoadNFT = new CustomButton(this, 250, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+      this.buttonRules = new CustomButton(this, 250, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'RULES', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+      this.add.existing(this.buttonRules);
+      
+      this.buttonRules.setInteractive()
+        .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+          this.scene.start('rules',  {moralisUser: this.moralisUser});
+        })
+      
+
+      this.buttonLoadNFT = new CustomButton(this, 415, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonLoadNFT);
       if (!this.btnNFTIsLocked) {
         this.buttonLoadNFT.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('load-nfts');
-          })
-      } else {
-        this.buttonLoadNFT.setInteractive()
-          .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, async () => {
             window.document.getElementById('fetch-nfts')?.click();
-               setTimeout( () => {
-                 console.log('NFTstring = ' + window.document.getElementById('nft-info').value);
-                this.NFTstring = window.document.getElementById('nft-info').value;
-                if (this.NFTstring) {
-                  console.log('NFTstring', this.NFTstring);
-                }
-              }, 10000); 
-          })
+            setTimeout( () => {
+             this.NFTstring = window.document.getElementById('nft-info').value;
+             if (this.NFTstring) {
+               this.scene.start('set-nfts-scene', { NFTstring: this.NFTstring});
+             }
+           }, 10000); 
 
+          })
       }
     }
   }

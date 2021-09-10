@@ -4,6 +4,8 @@ import GoodKnightCoinScene from './scenes/GoodKnightCoinScene'
 import Welcome from './scenes/Welcome'
 import GameOverScene from './scenes/GameOverScene'
 import CongratulationsScene from './scenes/CongratulationsScene'
+import NFTSettingsScene from './scenes/NFTSettingsScene'
+import RulesScene from './scenes/RulesScene'
 
 const config = {
     type: Phaser.AUTO,
@@ -22,7 +24,9 @@ const config = {
         Welcome, 
         GoodKnightCoinScene, 
         GameOverScene,
-        CongratulationsScene
+        CongratulationsScene,
+        NFTSettingsScene,
+        RulesScene
     ]
 }
 
