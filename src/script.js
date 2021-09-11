@@ -3,7 +3,37 @@ Moralis.initialize('iXrIAo95USwRZUbHFzS3CIvD2iGezWbYrZWVjZFC');
 //Server url from moralis.io
 Moralis.serverURL = 'https://6vsvjpvchvem.bigmoralis.com:2053/server';
 
+function addDOMElement(parent, referenceNode, type, id, value, style, onClickFunction) {
+    //Create an input type dynamically.   
+    var element = document.createElement("input");
+    //Assign different attributes to the element. 
+    element.type = type;
+    element.value = value;
+    element.id = id;
+    element.style = style;
+    element.onclick = onClickFunction;
+  
+    var parentElement = document.getElementById(parent);
+    parentElement.insertBefore(element, referenceNode);
+  }
+
+// Set up code for the additional DOM elements that will be added to the container div
+(function () {
+    addDOMElement('btnDiv', null, 'button', 'login_button', 'Sign in with MetaMask', 'display: none;', login);
+    addDOMElement('btnDiv', null, 'button', 'post-score', 'Post score', 'display: none;', postScore);
+    addDOMElement('btnDiv', null, 'button', 'fetch-nfts', 'Fetch NFTs', 'display: none;', getNFTs);
+    addDOMElement('btnDiv', document.getElementById('fiatIFrame'), 'button', 'buy-crypto', 'Buy Crypto', 'display: block;', iframeFiat);
+    addDOMElement('btnDiv', null, 'hidden', 'score-info', '', undefined);
+    addDOMElement('btnDiv', null, 'hidden', 'nft-info', '', undefined);
+ 
+})();
+
 let moralisUser = login;
+
+(async function(){
+    Moralis.initPlugins();
+})();
+
 async function login() {
     try {
         let user = await Moralis.Web3.authenticate();
@@ -48,6 +78,22 @@ async function getNFTs() {
     }
 }
 
+function buyCrypto() {
+    Moralis.Plugins.fiat.buy();
+}
+
+async function iframeFiat() {
+    if (document.getElementById('fiatIFrame').style.display == 'block') {
+        document.getElementById('fiatIFrame').style.display = 'none';
+    } 
+    else {
+        let response = await Moralis.Plugins.fiat.buy({}, {disableTriggers: true});
+        document.getElementById('fiatIFrame').style.display = 'block';
+        document.getElementById('fiatIFrame').src = response.result.data;
+    }
+}
+
 document.getElementById("login_button").onclick = login;
 document.getElementById("post-score").onclick = postScore;
 document.getElementById("fetch-nfts").onclick = getNFTs;
+document.getElementById('buy-crypto').onclick = iframeFiat;
