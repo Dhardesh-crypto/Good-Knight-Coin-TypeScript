@@ -93,7 +93,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
     }
 
     create() {
-
+        this.add.text(100, 680, 'Click on a perk/NFT to enable it during game play.\nThey are free to use for a limited period of time!', { fontSize: '32px', fill: '#fff' });
         this.buttonClose = new CustomButton(this, 85, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'BACK', { fontSize: '48px', fill: '#000' }).setScale(0.4);
         this.add.existing(this.buttonClose);
        
@@ -117,8 +117,8 @@ export default class NFTSettingsScene extends Phaser.Scene {
         (this.bExtraSpeed === true) ? nft3.setTint(0x00ff00) : nft3.clearTint();
         const nft4 = this.add.image(375, 550, NFT_FOUR_KEY).setScale(0.3).setDepth(1); // KnightLife, this.bExtraHealthPotions
         (this.bExtraHealthPotions === true) ? nft4.setTint(0x00ff00) : nft4.clearTint();
-        const nft5 = this.add.image(375, 700, NFT_FIVE_KEY).setScale(0.3).setDepth(1); // KnightNight, this.bExtraSword
-        (this.bExtraSword === true) ? nft5.setTint(0x00ff00) : nft5.clearTint();
+       // const nft5 = this.add.image(375, 700, NFT_FIVE_KEY).setScale(0.3).setDepth(1); // KnightNight, this.bExtraSword
+       // (this.bExtraSword === true) ? nft5.setTint(0x00ff00) : nft5.clearTint();
 
         nft1.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
@@ -196,7 +196,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                 });
 
 
-        nft5.setInteractive()
+    /*    nft5.setInteractive()
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
                     nft5.setScale(0.6);
                     nft5.setX(575);
@@ -213,7 +213,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     this.bExtraSword = !this.bExtraSword;
                     (this.bExtraSword === true) ? nft5.setTint(0x00ff00) : nft5.clearTint();
                 });
-
+    */
 
     }
 

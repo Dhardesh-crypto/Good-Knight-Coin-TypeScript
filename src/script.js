@@ -22,7 +22,8 @@ function addDOMElement(parent, referenceNode, type, id, value, style, onClickFun
     addDOMElement('btnDiv', null, 'button', 'login_button', 'Sign in with MetaMask', 'display: none;', login);
     addDOMElement('btnDiv', null, 'button', 'post-score', 'Post score', 'display: none;', postScore);
     addDOMElement('btnDiv', null, 'button', 'fetch-nfts', 'Fetch NFTs', 'display: none;', getNFTs);
-    addDOMElement('btnDiv', document.getElementById('fiatIFrame'), 'button', 'buy-crypto', 'Buy Crypto', 'display: block;', iframeFiat);
+    addDOMElement('btnDiv', document.getElementById('fiatIFrame'), 'button', 'buy-crypto', 'Buy Crypto', 'display: none;', iframeFiat);
+
     addDOMElement('btnDiv', null, 'hidden', 'score-info', '', undefined);
     addDOMElement('btnDiv', null, 'hidden', 'nft-info', '', undefined);
  

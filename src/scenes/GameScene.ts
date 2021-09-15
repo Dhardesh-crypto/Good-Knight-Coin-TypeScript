@@ -18,7 +18,7 @@ export default class GameScene extends Phaser.Scene
 
 	preload()
     {
-        this.load.atlas('knight', 'assets/knight.png', 'assets/knight.json');
+        this.load.atlas('knight', 'assets/GoodKnight.png', 'assets/GoodKnight.json');
     }
 
     create()
@@ -84,8 +84,8 @@ export default class GameScene extends Phaser.Scene
 			key: 'player-idle',
 			frames: this.anims.generateFrameNames('knight', 
             {   start: 1, 
-                end: 4,
-                prefix: 'Idle (',
+                end: 1,
+                prefix: 'Attack (',
                 suffix: ').png'
              }),
 			frameRate: 10,

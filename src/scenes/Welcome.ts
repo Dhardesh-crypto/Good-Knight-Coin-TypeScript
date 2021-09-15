@@ -46,6 +46,7 @@ export default class Scene1 extends Phaser.Scene {
     }
   
     create() {
+      this.sound.stopAll(); // Stops all sounds from previous screens
       this.background = this.add.image(633, 800, SPLASHSCREEN_KEY).setScale(0.625).setOrigin(0,1);
       const style = { fontSize: '32px', fill: '#fff' }
       this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
@@ -87,7 +88,7 @@ export default class Scene1 extends Phaser.Scene {
         })
       
 
-      this.buttonLoadNFT = new CustomButton(this, 85, 235, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs', { fontSize: '48px', fill: '#000' }).setScale(0.4);
+      this.buttonLoadNFT = new CustomButton(this, 85, 235, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnNFTIsLocked, 'NFTs/Perks', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonLoadNFT);
       if (!this.btnNFTIsLocked) {
         this.buttonLoadNFT.setInteractive()
