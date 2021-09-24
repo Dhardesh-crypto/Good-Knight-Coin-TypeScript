@@ -106,6 +106,15 @@ export default class GameScene extends Phaser.Scene
     private bExtraSpeed: boolean = false;
     private bExtraHealthPotions: boolean = false;
     private bExtraSword: boolean = false;
+
+    private localAmountKey: string = 'GoodKnightCoinV1A';
+    private localAmountPerks: string = '{}';
+    private amountKnightFlight: integer = 0;
+    private amountKnightProtect: integer = 0;
+    private amountKnightSpeed: integer = 0;
+    private amountKnightHealingPotions: integer = 0;
+    private amountKnightSword: integer = 0;
+
     constructor() 
     {
         super('game-scene');
@@ -133,6 +142,15 @@ export default class GameScene extends Phaser.Scene
         this.jumpHeight = (this.bExtraJump === true) ? -600 : -400;
         this.movementSpeed = (this.bExtraSpeed === true) ? 240 : 160;
         this.protect = (this.bExtraProtect === true) ? 5 : 0;
+
+        // Using cookies to rememberlast settings
+        this.localAmountPerks = (localStorage.getItem(this.localAmountKey) == null) ? '{}' : localStorage.getItem(this.localAmountKey);
+        const amountsJSON = JSON.parse(this.localAmountPerks);
+        this.amountKnightFlight = (amountsJSON?.Jump) ? amountsJSON.Jump : 0;
+        this.amountKnightProtect =  (amountsJSON?.Protect) ? amountsJSON.Protect : 0;
+        this.amountKnightSpeed =  (amountsJSON?.Speed) ? amountsJSON.Speed : 0;
+        this.amountKnightHealingPotions =  (amountsJSON?.Potions) ? amountsJSON.Potions : 0;
+        this.amountKnightSword =  (amountsJSON?.Sword) ? amountsJSON.Sword : 0;
     }
 
     preload()
@@ -380,6 +398,15 @@ export default class GameScene extends Phaser.Scene
         player.clearTint(); // reset the red color in case of being hit before
 
         if (this.score === 1500) {
+            // Subtract used perks from localstorage
+            if (this.bExtraJump) this.amountKnightFlight = this.amountKnightFlight -1;
+            if (this.bExtraProtect) this.amountKnightProtect = this.amountKnightProtect -1;
+            if (this.bExtraSpeed) this.amountKnightSpeed = this.amountKnightSpeed -1;
+            if (this.bExtraHealthPotions) this.amountKnightHealingPotions = this.amountKnightHealingPotions -1;
+            if (this.bExtraSword) this.amountKnightSword = this.amountKnightSword -1;
+
+            localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight}, "Protect": ${this.amountKnightProtect}, "Speed": ${this.amountKnightSpeed}, "Potions": ${this.amountKnightHealingPotions}, "Sword": ${this.amountKnightSword}}`);
+            
             this.scene.start('congratulations', 
                 { moralisUser: this.moralisUser, 
                     bExtraJump: this.bExtraJump,
@@ -534,20 +561,25 @@ export default class GameScene extends Phaser.Scene
             if (this.toggleMusic) { this.backgroundMusic.stop(); }
             if (this.toggleMusic) { this.gameOverFunny.play(); }
 
-            //setTimeout( () => {
-                this.scene.start('game-over', 
-                    {
-                        score: this.score,
-                        moralisUser: this.moralisUser, 
-                        bExtraJump: this.bExtraJump,
-                        bExtraProtect: this.bExtraProtect,
-                        bExtraSpeed: this.bExtraSpeed,
-                        bExtraHealthPotions: this.bExtraHealthPotions,
-                        bExtraSword: this.bExtraSword
-                    });
-            //}, 3000); 
+            // Subtract used perks from localstorage
+            if (this.bExtraJump) this.amountKnightFlight = this.amountKnightFlight -1;
+            if (this.bExtraProtect) this.amountKnightProtect = this.amountKnightProtect -1;
+            if (this.bExtraSpeed) this.amountKnightSpeed = this.amountKnightSpeed -1;
+            if (this.bExtraHealthPotions) this.amountKnightHealingPotions = this.amountKnightHealingPotions -1;
+            if (this.bExtraSword) this.amountKnightSword = this.amountKnightSword -1;
 
-    
+            localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight}, "Protect": ${this.amountKnightProtect}, "Speed": ${this.amountKnightSpeed}, "Potions": ${this.amountKnightHealingPotions}, "Sword": ${this.amountKnightSword}}`);
+
+            this.scene.start('game-over', 
+                {
+                    score: this.score,
+                    moralisUser: this.moralisUser, 
+                    bExtraJump: this.bExtraJump,
+                    bExtraProtect: this.bExtraProtect,
+                    bExtraSpeed: this.bExtraSpeed,
+                    bExtraHealthPotions: this.bExtraHealthPotions,
+                    bExtraSword: this.bExtraSword
+                });    
         }
         else {
             // Create a new bomb because player is not allowed to collect coins without
