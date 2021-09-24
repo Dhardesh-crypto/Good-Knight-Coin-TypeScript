@@ -209,6 +209,10 @@ export default class NFTSettingsScene extends Phaser.Scene {
                 localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight+5}, "Protect": ${this.amountKnightProtect+5}, "Speed": ${this.amountKnightSpeed+5}, "Potions": ${this.amountKnightHealingPotions+5}, "Sword": ${this.amountKnightSword}}`);
                 this.bPurchased = true;
                 this.toggleShow();
+                
+                // The next line triggers the PayPal payment portal 
+                window.document.getElementById('btnPayPalSubmit')?.click();
+
                 this.scene.start('set-nfts-scene',  
                 { moralisUser: this.moralisUser, 
                     bExtraJump: this.bPrevExtraJump,
