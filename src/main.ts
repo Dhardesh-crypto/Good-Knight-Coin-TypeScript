@@ -9,6 +9,7 @@ import RulesScene from './scenes/RulesScene'
 
 const config = {
     type: Phaser.AUTO,
+    parent: 'game',
     dom: {
         createContainer: true
     },
@@ -20,6 +21,7 @@ const config = {
             debug: false
         }
     },
+    
 	scene: [
         Welcome, 
         GoodKnightCoinScene, 

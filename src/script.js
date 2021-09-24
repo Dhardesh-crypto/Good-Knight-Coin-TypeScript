@@ -26,6 +26,8 @@ function addDOMElement(parent, referenceNode, type, id, value, style, onClickFun
 
     addDOMElement('btnDiv', null, 'hidden', 'score-info', '', undefined);
     addDOMElement('btnDiv', null, 'hidden', 'nft-info', '', undefined);
+    addDOMElement('btnDiv', null, 'hidden', 'walletAddress', '', undefined);
+
  
 })();
 
@@ -48,16 +50,33 @@ async function login() {
 
 async function postScore() {
     try {
-        let user = await Moralis.Web3.authenticate();
-        const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
-        const goodKnightScore = new GoodKnightScore();
-        goodKnightScore.set("sender", user.get('ethAddress'));
-        goodKnightScore.set("score", 1500);
-        console.log(user.get('ethAddress') + " scored " + 1500);
-        let result = await goodKnightScore.save();
-        console.log(goodKnightScore); 
-        alert('Token claim submitted to collective airdrop dataset.\nThank you for submitting...');
-
+        if (document.getElementById('walletAddress').value == '') {
+            let user = await Moralis.Web3.authenticate();
+            const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
+            const goodKnightScore = new GoodKnightScore();
+            goodKnightScore.set("sender", user.get('ethAddress'));
+            goodKnightScore.set("score", 1500);
+            console.log(user.get('ethAddress') + " scored " + 1500);
+            let result = await goodKnightScore.save();
+            console.log(goodKnightScore); 
+        }
+        else {
+            let validAddress = Web3.utils.isAddress(document.getElementById('walletAddress').value);
+            if (validAddress) {
+                const GoodKnightScore = Moralis.Object.extend("GoodKnightScore");
+                const goodKnightScore = new GoodKnightScore();
+                goodKnightScore.set("sender",document.getElementById('walletAddress').value);
+                goodKnightScore.set("score", 1500);
+                console.log(document.getElementById('walletAddress').value + " scored " + 1500);
+                let result = await goodKnightScore.save();
+                console.log(goodKnightScore); 
+                alert('Token claim submitted to collective airdrop dataset.\nThank you for submitting...');
+            }
+            else {
+                alert('Your token claim was denied because the given address\nis not a valid ERC-20 Wallet address...');
+            }
+        }
+        
     }
     catch (error) {
         console.log(error);
