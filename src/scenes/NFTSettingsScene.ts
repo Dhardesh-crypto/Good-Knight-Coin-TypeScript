@@ -75,10 +75,6 @@ export default class NFTSettingsScene extends Phaser.Scene {
         this.bExtraHealthPotions =  (perksJSON?.bExtraHealthPotions) ? perksJSON.bExtraHealthPotions : data.bExtraHealthPotions;
         this.bExtraSword =  (perksJSON?.bExtraSword) ? perksJSON.bExtraSword : data.bExtraSword;
 
-        // Using cookies to store purchasing decision
-        this.localPurchasedPerks = (localStorage.getItem(this.localPurchaseKey) == null) ? false : localStorage.getItem(this.localPurchaseKey);
-        this.bPurchased = (this.localPurchasedPerks != false) ? true : false;
-
         // Using cookies to rememberlast settings
         this.localAmountPerks = (localStorage.getItem(this.localAmountKey) == null) ? '{}' : localStorage.getItem(this.localAmountKey);
         const amountsJSON = JSON.parse(this.localAmountPerks);
@@ -200,8 +196,8 @@ export default class NFTSettingsScene extends Phaser.Scene {
         const totalText = this.add.text(-25, 50,  'Total 4.84 EUR', { fontSize: '16px', color: '#000', fontStyle: 'bold' });
         this.shoppingPanel.add(totalText);
 
-        const buttonBuy = new CustomButton(this, 85, 110, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'Buy', { fontSize: '48px', fill: '#000' }).setScale(0.3);
-        this.shoppingPanel.add(buttonBuy);
+        /* const buttonBuy = new CustomButton(this, 85, 110, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'Buy', { fontSize: '48px', fill: '#000' }).setScale(0.3);
+         this.shoppingPanel.add(buttonBuy);
         buttonBuy.setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                 // TODO set this parameter only on result page from merchant gateway
@@ -211,7 +207,9 @@ export default class NFTSettingsScene extends Phaser.Scene {
                 this.toggleShow();
                 
                 // The next line triggers the PayPal payment portal 
-                window.document.getElementById('btnPayPalSubmit')?.click();
+                debugger;
+                window.document.getElementsByClassName('paypal-logo paypal-logo-paypal paypal-logo-color-blue')[0].click();
+                // window.document.getElementById('btnPayPalSubmit')?.click();
 
                 this.scene.start('set-nfts-scene',  
                 { moralisUser: this.moralisUser, 
@@ -221,7 +219,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     bExtraHealthPotions: this.bPrevExtraHealthPotions,
                     bExtraSword: this.bPrevExtraSword
                 });
-            }) 
+            }) */
 
         const shoppingCartButton = this.add.image(this.scale.width - 40, 40, SHOPPING_CART).setScale(0.7);
         shoppingCartButton.setInteractive()
@@ -285,7 +283,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft1.setDepth(1);
                 })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    if (this.bPurchased) {
+                    if (this.amountKnightFlight > 0) {
                         this.bExtraJump = !this.bExtraJump;
                         (this.bExtraJump === true) ? nft1.setTint(0x70c244) : nft1.clearTint();
                     }
@@ -321,7 +319,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft2.setDepth(1);
                 })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    if (this.bPurchased) {
+                    if (this.amountKnightProtect > 0) {
                         this.bExtraProtect = !this.bExtraProtect;
                         (this.bExtraProtect === true) ? nft2.setTint(0x70c244) : nft2.clearTint();
                     }
@@ -357,7 +355,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft3.setDepth(1);
                 })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    if (this.bPurchased) {
+                    if (this.amountKnightSpeed > 0) {
                         this.bExtraSpeed = !this.bExtraSpeed;
                         (this.bExtraSpeed === true) ? nft3.setTint(0x70c244) : nft3.clearTint();
                     }
@@ -393,7 +391,7 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     nft4.setDepth(1);
                 })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    if (this.bPurchased) {
+                    if (this.amountKnightHealingPotions > 0) {
                         this.bExtraHealthPotions = !this.bExtraHealthPotions;
                         (this.bExtraHealthPotions === true) ? nft4.setTint(0x70c244) : nft4.clearTint();
                     }

@@ -387,7 +387,23 @@ export default class GameScene extends Phaser.Scene
         potion.disableBody(true, true);
         this.lives += 1;
         this.livesLabel.add(1);
-        player.setTint(0x00ff00);
+
+        const primaryColor = Phaser.Display.Color.ValueToColor('0xffffff'); // white
+        const healingColor = Phaser.Display.Color.ValueToColor('0x00ff00'); // green
+
+        this.tweens.addCounter({
+            from: 0,
+            to: 100,
+            duration: 300,
+            ease: Phaser.Math.Easing.Sine.InOut,
+            yoyo: true,
+            onUpdate: tween => {
+               const value = tween.getValue();
+               const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(primaryColor, healingColor, 100, value);
+               const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
+               player.setTint(color);
+            }            
+        })
     }
 
     collectCoin(player, coin) {
@@ -395,7 +411,7 @@ export default class GameScene extends Phaser.Scene
         coin.disableBody(true, true);
         this.score += 10;
         this.scoreLabel.add(10)
-        player.clearTint(); // reset the red color in case of being hit before
+        // player.clearTint(); // reset the red color in case of being hit before
 
         if (this.score === 1500) {
             // Subtract used perks from localstorage
@@ -543,12 +559,44 @@ export default class GameScene extends Phaser.Scene
         }
         this.physics.pause();
         if (this.protect > 0) {
-            this.player.setTint(0x0000ff);
+
+            const primaryColor = Phaser.Display.Color.ValueToColor('0xffffff'); // white
+            const protectionColor = Phaser.Display.Color.ValueToColor('0x0000ff'); // blue
+    
+            this.tweens.addCounter({
+                from: 0,
+                to: 100,
+                duration: 300,
+                ease: Phaser.Math.Easing.Sine.InOut,
+                yoyo: true,
+                onUpdate: tween => {
+                   const value = tween.getValue();
+                   const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(primaryColor, protectionColor, 100, value);
+                   const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
+                   player.setTint(color);
+                }            
+            })
+
             this.protect = this.protect -1;
             this.protectLabel.subtract(1);
     
         } else {
-            this.player.setTint(0xff0000);
+            const primaryColor = Phaser.Display.Color.ValueToColor('0xffffff'); // white
+            const woundedColor = Phaser.Display.Color.ValueToColor('0xff0000'); // red
+    
+            this.tweens.addCounter({
+                from: 0,
+                to: 100,
+                duration: 300,
+                ease: Phaser.Math.Easing.Sine.InOut,
+                yoyo: true,
+                onUpdate: tween => {
+                   const value = tween.getValue();
+                   const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(primaryColor, woundedColor, 100, value);
+                   const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
+                   player.setTint(color);
+                }            
+            })
             this.lives = this.lives -1;
             this.livesLabel.subtract(1)    
         }
