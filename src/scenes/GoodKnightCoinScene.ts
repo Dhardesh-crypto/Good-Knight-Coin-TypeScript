@@ -199,6 +199,8 @@ export default class GameScene extends Phaser.Scene
 
     create() 
     {
+        this.cameras.main.fadeIn(1000,0,0,0);
+
         this.background = new BackgroundSpawner(this, 600, 400, 
             BACKGROUND1_KEY, BACKGROUND2_KEY, BACKGROUND3_KEY, 
             BACKGROUND4_KEY, BACKGROUND5_KEY, BACKGROUND6_KEY, 
@@ -423,15 +425,20 @@ export default class GameScene extends Phaser.Scene
 
             localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight}, "Protect": ${this.amountKnightProtect}, "Speed": ${this.amountKnightSpeed}, "Potions": ${this.amountKnightHealingPotions}, "Sword": ${this.amountKnightSword}}`);
             
-            this.scene.start('congratulations', 
-                { moralisUser: this.moralisUser, 
-                    bExtraJump: this.bExtraJump,
-                    bExtraProtect: this.bExtraProtect,
-                    bExtraSpeed: this.bExtraSpeed,
-                    bExtraHealthPotions: this.bExtraHealthPotions,
-                    bExtraSword: this.bExtraSword
-                }
-            );
+            this.physics.pause;
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {                                  
+                this.scene.start('congratulations', 
+                    { moralisUser: this.moralisUser, 
+                        bExtraJump: this.bExtraJump,
+                        bExtraProtect: this.bExtraProtect,
+                        bExtraSpeed: this.bExtraSpeed,
+                        bExtraHealthPotions: this.bExtraHealthPotions,
+                        bExtraSword: this.bExtraSword
+                    }
+                );
+            });
         }
 
         if (this.coins.countActive(true) == 0) {
@@ -618,7 +625,10 @@ export default class GameScene extends Phaser.Scene
 
             localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight}, "Protect": ${this.amountKnightProtect}, "Speed": ${this.amountKnightSpeed}, "Potions": ${this.amountKnightHealingPotions}, "Sword": ${this.amountKnightSword}}`);
 
-            this.scene.start('game-over', 
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start('game-over', 
                 {
                     score: this.score,
                     moralisUser: this.moralisUser, 
@@ -628,6 +638,7 @@ export default class GameScene extends Phaser.Scene
                     bExtraHealthPotions: this.bExtraHealthPotions,
                     bExtraSword: this.bExtraSword
                 });    
+            })
         }
         else {
             // Create a new bomb because player is not allowed to collect coins without

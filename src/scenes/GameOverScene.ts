@@ -56,6 +56,8 @@ export default class GameOverScene extends Phaser.Scene {
   
     create() {
 
+        this.cameras.main.fadeIn(1000,0,0,0);
+
         this.physics.pause();
         this.add.image(650, 350, GAME_OVER_LIT_KEY);
 

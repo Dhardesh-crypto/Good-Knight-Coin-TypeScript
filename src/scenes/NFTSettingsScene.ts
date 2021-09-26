@@ -143,20 +143,28 @@ export default class NFTSettingsScene extends Phaser.Scene {
        */
     }
 
-    create() {
+    create() 
+    {
+        this.cameras.main.fadeIn(1000,0,0,0);
+
         this.add.text(190, 680, '1. Purchase perks with the shoppingcart.\n2. Click on a perk/NFT to enable it.\n3. Click Activate to use it during gameplay.', { fontSize: '32px', fill: '#fff' });
         this.buttonBack = new CustomButton(this, 85, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'BACK', { fontSize: '48px', fill: '#000' }).setScale(0.4);
         this.add.existing(this.buttonBack);
        
           this.buttonBack.setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-              this.scene.start('welcome',  
-                { moralisUser: this.moralisUser, 
-                    bExtraJump: this.bPrevExtraJump,
-                    bExtraProtect: this.bPrevExtraProtect,
-                    bExtraSpeed: this.bPrevExtraSpeed,
-                    bExtraHealthPotions: this.bPrevExtraHealthPotions,
-                    bExtraSword: this.bPrevExtraSword
+                this.cameras.main.fadeOut(1000,0,0,0);
+
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+    
+                    this.scene.start('welcome',  
+                        { moralisUser: this.moralisUser, 
+                            bExtraJump: this.bPrevExtraJump,
+                            bExtraProtect: this.bPrevExtraProtect,
+                            bExtraSpeed: this.bPrevExtraSpeed,
+                            bExtraHealthPotions: this.bPrevExtraHealthPotions,
+                            bExtraSword: this.bPrevExtraSword
+                        });
                 });
             });
 
@@ -169,27 +177,33 @@ export default class NFTSettingsScene extends Phaser.Scene {
                         this.localStorageKey, 
                         `{ "bExtraJump": ${this.bExtraJump}, "bExtraProtect": ${this.bExtraProtect}, "bExtraSpeed": ${this.bExtraSpeed}, "bExtraHealthPotions": ${this.bExtraHealthPotions}, "bExtraSword": ${this.bExtraSword}}`
                     );
-                    this.scene.start('welcome',  
-                        { moralisUser: this.moralisUser, 
-                            bExtraJump: this.bExtraJump,
-                            bExtraProtect: this.bExtraProtect,
-                            bExtraSpeed: this.bExtraSpeed,
-                            bExtraHealthPotions: this.bExtraHealthPotions,
-                            bExtraSword: this.bExtraSword
-                        });
+
+                    this.cameras.main.fadeOut(1000,0,0,0);
+
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+        
+                        this.scene.start('welcome',  
+                            { moralisUser: this.moralisUser, 
+                                bExtraJump: this.bExtraJump,
+                                bExtraProtect: this.bExtraProtect,
+                                bExtraSpeed: this.bExtraSpeed,
+                                bExtraHealthPotions: this.bExtraHealthPotions,
+                                bExtraSword: this.bExtraSword
+                            });
+                    });
                 });
     
 
         this.shoppingPanel = this.add.container(this.scale.width +155, 220).setDepth(3);
         const panel = this.add.image(0, 0, GREY_PANEL).setScale(3);
         this.shoppingPanel.add(panel);
-        const kfText = this.add.text(-130, -100, '1x KnightFlight  1.00 EUR', { fontSize: '16px', color: '#000' });
+        const kfText = this.add.text(-130, -100, '5x KnightFlight  1.00 EUR', { fontSize: '16px', color: '#000' });
         this.shoppingPanel.add(kfText);
-        const ksText = this.add.text(-130, -70,  '1x KnightSpeed   1.00 EUR', { fontSize: '16px', color: '#000' });
+        const ksText = this.add.text(-130, -70,  '5x KnightSpeed   1.00 EUR', { fontSize: '16px', color: '#000' });
         this.shoppingPanel.add(ksText);
-        const kpText = this.add.text(-130, -40,  '1x KnightProtect 1.00 EUR', { fontSize: '16px', color: '#000' });
+        const kpText = this.add.text(-130, -40,  '5x KnightProtect 1.00 EUR', { fontSize: '16px', color: '#000' });
         this.shoppingPanel.add(kpText);
-        const klText = this.add.text(-130, -10,   '1x KnightLife    1.00 EUR', { fontSize: '16px', color: '#000' });
+        const klText = this.add.text(-130, -10,   '5x KnightLife    1.00 EUR', { fontSize: '16px', color: '#000' });
         this.shoppingPanel.add(klText);
         const taxText = this.add.text(-25, 20,    'Taxes 0.84 EUR', { fontSize: '16px', color: '#000' });
         this.shoppingPanel.add(taxText);

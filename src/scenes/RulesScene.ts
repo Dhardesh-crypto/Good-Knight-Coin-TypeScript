@@ -39,6 +39,8 @@ export default class RulesScene extends Phaser.Scene {
     }
   
     create() {
+      this.cameras.main.fadeIn(1000,0,0,0);
+
       this.background = this.add.image(30, 750, SPLASHSCREEN_KEY).setScale(0.625).setOrigin(0,1);
       const style = { fontSize: '32px', fill: '#fff' }
 
@@ -47,14 +49,20 @@ export default class RulesScene extends Phaser.Scene {
      
         this.buttonClose.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('welcome',   { moralisUser: this.moralisUser, 
-                bExtraJump: this.bExtraJump,
-                bExtraProtect: this.bExtraProtect,
-                bExtraSpeed: this.bExtraSpeed,
-                bExtraHealthPotions: this.bExtraHealthPotions,
-                bExtraSword: this.bExtraSword
-              }
-            );
+            this.cameras.main.fadeOut(1000,0,0,0);
+
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+
+              this.scene.start('welcome',   { moralisUser: this.moralisUser, 
+                  bExtraJump: this.bExtraJump,
+                  bExtraProtect: this.bExtraProtect,
+                  bExtraSpeed: this.bExtraSpeed,
+                  bExtraHealthPotions: this.bExtraHealthPotions,
+                  bExtraSword: this.bExtraSword
+                }
+              );
+            });
+            
           });
      
     }

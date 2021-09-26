@@ -42,6 +42,8 @@ export default class CongratulationsScene extends Phaser.Scene {
 
   create() {
 
+    this.cameras.main.fadeIn(1000,0,0,0);
+
     const congrats = this.add.image(600, 450, CONGRATULATIONS).setScale(1.3);
 
 
@@ -49,14 +51,20 @@ export default class CongratulationsScene extends Phaser.Scene {
     this.add.existing(this.buttonPlay);
     this.buttonPlay.setInteractive()
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-        this.scene.start('welcome',
-          {
-            moralisUser: this.moralisUser,
-            bExtraJump: this.bExtraJump,
-            bExtraProtect: this.bExtraProtect,
-            bExtraSpeed: this.bExtraSpeed,
-            bExtraHealthPotions: this.bExtraHealthPotions,
-            bExtraSword: this.bExtraSword
+
+        this.cameras.main.fadeOut(1000,0,0,0);
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+
+            this.scene.start('welcome',
+              {
+                moralisUser: this.moralisUser,
+                bExtraJump: this.bExtraJump,
+                bExtraProtect: this.bExtraProtect,
+                bExtraSpeed: this.bExtraSpeed,
+                bExtraHealthPotions: this.bExtraHealthPotions,
+                bExtraSword: this.bExtraSword
+              });
           });
       })
 

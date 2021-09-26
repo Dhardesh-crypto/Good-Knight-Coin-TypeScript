@@ -49,13 +49,16 @@ export default class Scene1 extends Phaser.Scene {
     }
   
     create() {
+
+      this.cameras.main.fadeIn(1000,0,0,0);
+
       this.sound.stopAll(); // Stops all sounds from previous screens
       this.background = this.add.image(633, 800, SPLASHSCREEN_KEY).setScale(0.625).setOrigin(0,1);
       
       this.poweredByMoralis = this.add.image(510, 750, MORALIS_POWERED).setScale(0.5);
 
-      const style = { fontSize: '32px', fill: '#fff' }
-      this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more NFTs?', style);
+      const style = { fontSize: '30px', fill: '#fff' };
+      this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more perks/NFTs?', style);
 
       const styleSmall = { fontSize: '16px', fill: '#fff' };
       this.add.text (50, 680, 'Left: <LEFT>\nRight: <RIGHT>\nJump: <UP>\nToggle music: <M>\nPause game: <SPACE>\nEnd game:<ESC>');
@@ -65,15 +68,21 @@ export default class Scene1 extends Phaser.Scene {
       if (!this.btnIsLocked) {
         this.buttonPlay.setInteractive()
           .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.start('game-scene',  
-              { moralisUser: this.moralisUser, 
-                bExtraJump: this.bExtraJump,
-                bExtraProtect: this.bExtraProtect,
-                bExtraSpeed: this.bExtraSpeed,
-                bExtraHealthPotions: this.bExtraHealthPotions,
-                bExtraSword: this.bExtraSword
-              }
-            );
+
+            this.cameras.main.fadeOut(1000,0,0,0);
+
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+
+                this.scene.start('game-scene',  
+                  { moralisUser: this.moralisUser, 
+                    bExtraJump: this.bExtraJump,
+                    bExtraProtect: this.bExtraProtect,
+                    bExtraSpeed: this.bExtraSpeed,
+                    bExtraHealthPotions: this.bExtraHealthPotions,
+                    bExtraSword: this.bExtraSword
+                  }
+                );
+            });
           })
       }
 

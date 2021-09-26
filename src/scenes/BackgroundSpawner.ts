@@ -52,6 +52,7 @@ export default class BackgroundSpawner extends Phaser.GameObjects.Container {
     }
 
     changeScene(i: integer) {
+        this.scene.cameras.main.fadeOut(250, 0, 0, 0)
         switch(i) {
             case 1: {
                 this.background1.setVisible(true);
@@ -163,5 +164,6 @@ export default class BackgroundSpawner extends Phaser.GameObjects.Container {
                 break;
             }
         }
+        this.scene.cameras.main.fadeIn(250, 0, 0, 0)
     }
 }
