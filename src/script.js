@@ -117,3 +117,52 @@ document.getElementById("login_button").onclick = login;
 document.getElementById("post-score").onclick = postScore;
 document.getElementById("fetch-nfts").onclick = getNFTs;
 document.getElementById('buy-crypto').onclick = iframeFiat;
+
+function initPayPalButton() { 
+    paypal.Buttons({
+        style: {
+        shape: 'pill',
+        color: 'gold',
+        layout: 'horizontal',
+        label: 'buynow'
+        
+        },
+
+        createOrder: function(data, actions) {
+        return actions.order.create({
+            purchase_units: [{"description":"GoodKnightCoin perk pack","amount":{"currency_code":"EUR","value":4.84,"breakdown":{"item_total":{"currency_code":"EUR","value":4},"shipping":{"currency_code":"EUR","value":0},"tax_total":{"currency_code":"EUR","value":0.84}}}}]
+        });
+        },
+
+        onApprove: function(data, actions) {
+
+            return actions.order.capture().then(function(orderData) {
+            
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            if (orderData?.status == "COMPLETED") {
+                
+                // Using cookies to rememberlast settings
+                var localAmountPerks = (localStorage.getItem('GoodKnightCoinV1A') == null) ? '{}' : localStorage.getItem('GoodKnightCoinV1A');
+                var amountsJSON = JSON.parse(localAmountPerks);
+                var amountKnightFlight = (amountsJSON?.Jump) ? amountsJSON.Jump : 0;
+                var amountKnightProtect =  (amountsJSON?.Protect) ? amountsJSON.Protect : 0;
+                var amountKnightSpeed =  (amountsJSON?.Speed) ? amountsJSON.Speed : 0;
+                var amountKnightHealingPotions =  (amountsJSON?.Potions) ? amountsJSON.Potions : 0;
+                var amountKnightSword =  (amountsJSON?.Sword) ? amountsJSON.Sword : 0;
+                localStorage.setItem('GoodKnightCoinV1A', `{ "Jump": ${amountKnightFlight+5}, "Protect": ${amountKnightProtect+5}, "Speed": ${amountKnightSpeed+5}, "Potions": ${amountKnightHealingPotions+5}, "Sword": ${amountKnightSword}}`);
+                alert('Thank you for your purchase.\nAfter refreshing you will see your perks.\nRedirecting you to the beginning of the game.');
+                window.location.reload();
+            }
+
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            
+        });
+        },
+
+        onError: function(err) {
+        console.log(err);
+        }
+    }).render('#paypal-button-container');
+}
+
+initPayPalButton();

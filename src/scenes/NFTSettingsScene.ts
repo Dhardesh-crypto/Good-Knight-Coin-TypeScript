@@ -193,7 +193,6 @@ export default class NFTSettingsScene extends Phaser.Scene {
                     });
                 });
     
-
         this.shoppingPanel = this.add.container(this.scale.width +155, 220).setDepth(3);
         const panel = this.add.image(0, 0, GREY_PANEL).setScale(3);
         this.shoppingPanel.add(panel);
@@ -209,32 +208,9 @@ export default class NFTSettingsScene extends Phaser.Scene {
         this.shoppingPanel.add(taxText);
         const totalText = this.add.text(-25, 50,  'Total 4.84 EUR', { fontSize: '16px', color: '#000', fontStyle: 'bold' });
         this.shoppingPanel.add(totalText);
-
-        /* const buttonBuy = new CustomButton(this, 85, 110, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'Buy', { fontSize: '48px', fill: '#000' }).setScale(0.3);
-         this.shoppingPanel.add(buttonBuy);
-        buttonBuy.setInteractive()
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                // TODO set this parameter only on result page from merchant gateway
-                localStorage.setItem(this.localPurchaseKey, 'true');
-                localStorage.setItem(this.localAmountKey, `{ "Jump": ${this.amountKnightFlight+5}, "Protect": ${this.amountKnightProtect+5}, "Speed": ${this.amountKnightSpeed+5}, "Potions": ${this.amountKnightHealingPotions+5}, "Sword": ${this.amountKnightSword}}`);
-                this.bPurchased = true;
-                this.toggleShow();
-                
-                // The next line triggers the PayPal payment portal 
-                debugger;
-                window.document.getElementsByClassName('paypal-logo paypal-logo-paypal paypal-logo-color-blue')[0].click();
-                // window.document.getElementById('btnPayPalSubmit')?.click();
-
-                this.scene.start('set-nfts-scene',  
-                { moralisUser: this.moralisUser, 
-                    bExtraJump: this.bPrevExtraJump,
-                    bExtraProtect: this.bPrevExtraProtect,
-                    bExtraSpeed: this.bPrevExtraSpeed,
-                    bExtraHealthPotions: this.bPrevExtraHealthPotions,
-                    bExtraSword: this.bPrevExtraSword
-                });
-            }) */
-
+        const usePPText = this.add.text(-75, 80,  'Use the Paypal button\nto purchase', { fontSize: '16px', color: '#000', fontStyle: 'bold' });
+        this.shoppingPanel.add(usePPText);
+ 
         const shoppingCartButton = this.add.image(this.scale.width - 40, 40, SHOPPING_CART).setScale(0.7);
         shoppingCartButton.setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
