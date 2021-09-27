@@ -61,7 +61,7 @@ export default class Scene1 extends Phaser.Scene {
       this.welcomeText = this.add.text(50, 300, 'You are a broke knight.\n\rNo sword to defend yourself.\n\rGo collect some wealth.\n\rAnd restore your dignity.\n\rMaybe increase your might\n\rwith one or more perks/NFTs?', style);
 
       const styleSmall = { fontSize: '16px', fill: '#fff' };
-      this.add.text (50, 680, 'Left: <LEFT>\nRight: <RIGHT>\nJump: <UP>\nToggle music: <M>\nPause game: <SPACE>\nEnd game:<ESC>');
+      this.add.text (50, 680, 'Left: <LEFT> or <A>\nRight: <RIGHT> or <D>\nJump: <UP> or <W>\nToggle music: <M>\nPause game: <SPACE>\nEnd game:<ESC>');
 
       this.buttonPlay = new CustomButton(this, 85, 65, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, this.btnIsLocked, 'PLAY', { fontSize: '48px', fill: '#000' }).setScale(0.4);
       this.add.existing(this.buttonPlay);

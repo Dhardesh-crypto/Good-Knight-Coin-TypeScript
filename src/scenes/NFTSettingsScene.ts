@@ -209,6 +209,8 @@ export default class NFTSettingsScene extends Phaser.Scene {
         this.shoppingPanel.add(taxText);
         const totalText = this.add.text(-25, 50,  'Total 4.84 EUR', { fontSize: '16px', color: '#000', fontStyle: 'bold' });
         this.shoppingPanel.add(totalText);
+        const ppText = this.add.text(-75, 80,  'Use PayPal button\nto purchase perks', { fontSize: '16px', color: '#000', fontStyle: 'bold' });
+        this.shoppingPanel.add(ppText);
 
         /* const buttonBuy = new CustomButton(this, 85, 110, BUTTON_NORMAL, BUTTON_HOVER, BUTTON_CLICKED, BUTTON_LOCKED, false, 'Buy', { fontSize: '48px', fill: '#000' }).setScale(0.3);
          this.shoppingPanel.add(buttonBuy);

@@ -78,6 +78,7 @@ export default class GameScene extends Phaser.Scene
     private potionSpawner! : HealthPotionSpawner;
     private potions! : Phaser.Physics.Arcade.Group;
     private cursors! : Phaser.Types.Input.Keyboard.CursorKeys;
+    private cursorsWASD! : Phaser.Types.Input.Keyboard.CursorKeys;
     private livesLabel! : LivesLabel;
     private scoreLabel! : ScoreLabel;
     private protectLabel! : ProtectLabel;
@@ -151,7 +152,6 @@ export default class GameScene extends Phaser.Scene
         this.jumpHeight = (this.bExtraJump === true && this.amountKnightFlight > 0) ? -600 : -400;
         this.movementSpeed = (this.bExtraSpeed === true && this.amountKnightSpeed > 0) ? 240 : 160;
         this.protect = (this.bExtraProtect === true && this.amountKnightProtect > 0) ? 5 : 0;
-
     }
 
     preload()
@@ -235,6 +235,14 @@ export default class GameScene extends Phaser.Scene
         this.physics.add.overlap(this.player, this.coins, this.collectCoin, undefined, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursorsWASD = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            shift: Phaser.Input.Keyboard.KeyCodes.SHIFT
+        }) as Phaser.Types.Input.Keyboard.CursorKeys;
 
         this.scoreLabel = this.createScoreLabel(63, 16, this.score);
         this.livesLabel = this.createLivesLabel(63, 67, this.lives);
@@ -358,12 +366,12 @@ export default class GameScene extends Phaser.Scene
             }
         }
 
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown || this.cursorsWASD.left.isDown)
         {
             this.player.setVelocityX(-this.movementSpeed);
             this.player.anims.play('left', true);
         }
-        else if (this.cursors.right.isDown)
+        else if (this.cursors.right.isDown || this.cursorsWASD.right.isDown)
         {
             this.player.setVelocityX(this.movementSpeed);
             this.player.anims.play('right', true);
@@ -374,12 +382,12 @@ export default class GameScene extends Phaser.Scene
             this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down)
+        if ((this.cursors.up.isDown || this.cursorsWASD.up.isDown) && this.player.body.touching.down)
         {
             if (this.toggleMusic) { this.playerJump.play(); }
             this.player.setVelocityY(this.jumpHeight);
         }
-        else if (this.bExtraJump && this.cursors.down.isDown)
+        else if (this.bExtraJump && (this.cursors.down.isDown || this.cursorsWASD.down.isDown))
         {
             this.player.setVelocityY(-this.jumpHeight*0.5);
         }

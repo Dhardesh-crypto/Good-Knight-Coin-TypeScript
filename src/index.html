@@ -7,7 +7,7 @@
 					script.js
 					favicon.ico -->
 
-<!-- -->		<meta name = "viewport" content = "width = device-width, initial-scale =
+<!-- 		<meta name = "viewport" content = "width = device-width, initial-scale =
 			1.0, maximum-scale = 1.0, minimum-scale = 1.0, user-scalable = 0,
 		  	minimal-ui" />
 		<style type = "text/css">
@@ -31,74 +31,26 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-		<!-- -->
+ -->
 	  </head>
 	  <body> 
-<!-- -->		
+<!-- 		
 		<div class="container" id="btnDiv"> 
 		</div>	
 		<br />
-		<script src="script.js"></script> <!-- -->
+		 -->
 		<div id="game">
 			<script src="main.ts"></script>
 		</div>
 
-		<!-- Paypal integration -->
+<!-- Paypal integration 
 		<div id="smart-button-container" style="float:right">
 			<div style="float:right">
 				<div id="paypal-button-container"></div>
 			</div>
 			</div>
 		<script src="https://www.paypal.com/sdk/js?client-id=AR15UIDyYodzys4nVFa381c9HED7sZ40BXsjvVSL_DeR6B95Cv7BdG_DfnKvv9D7OWgZmyXQMDiK_nzW&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
-		<script>
-			function initPayPalButton() {
-			paypal.Buttons({
-				style: {
-				shape: 'pill',
-				color: 'gold',
-				layout: 'horizontal',
-				label: 'buynow'
-				
-				},
-		
-				createOrder: function(data, actions) {
-				return actions.order.create({
-					purchase_units: [{"description":"GoodKnightCoin perk pack","amount":{"currency_code":"EUR","value":4.84,"breakdown":{"item_total":{"currency_code":"EUR","value":4},"shipping":{"currency_code":"EUR","value":0},"tax_total":{"currency_code":"EUR","value":0.84}}}}]
-				});
-				},
-		
-				onApprove: function(data, actions) {
-
-					return actions.order.capture().then(function(orderData) {
-					
-					console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-					if (orderData?.status == "COMPLETED") {
-						
-						// Using cookies to rememberlast settings
-						var localAmountPerks = (localStorage.getItem('GoodKnightCoinV1A') == null) ? '{}' : localStorage.getItem('GoodKnightCoinV1A');
-						var amountsJSON = JSON.parse(localAmountPerks);
-						var amountKnightFlight = (amountsJSON?.Jump) ? amountsJSON.Jump : 0;
-						var amountKnightProtect =  (amountsJSON?.Protect) ? amountsJSON.Protect : 0;
-						var amountKnightSpeed =  (amountsJSON?.Speed) ? amountsJSON.Speed : 0;
-						var amountKnightHealingPotions =  (amountsJSON?.Potions) ? amountsJSON.Potions : 0;
-						var amountKnightSword =  (amountsJSON?.Sword) ? amountsJSON.Sword : 0;
-						localStorage.setItem('GoodKnightCoinV1A', `{ "Jump": ${amountKnightFlight+5}, "Protect": ${amountKnightProtect+5}, "Speed": ${amountKnightSpeed+5}, "Potions": ${amountKnightHealingPotions+5}, "Sword": ${amountKnightSword}}`);
-						alert('Thank you for your purchase.\nAfter refreshing you will see your perks.\nRedirecting you to the beginning of the game.');
-						window.location.reload();
-					}
-		
-					// Or go to another URL:  actions.redirect('thank_you.html');
-					
-				});
-				},
-		
-				onError: function(err) {
-				console.log(err);
-				}
-			}).render('#paypal-button-container');
-			}
-			initPayPalButton();
-		</script>
-			
+		<script src="script.js"></script>
+ -->
 	</body>
 </html>
