@@ -139,10 +139,6 @@ export default class GameScene extends Phaser.Scene
         this.bExtraHealthPotions = data.bExtraHealthPotions;
         this.bExtraSword = data.bExtraSword;
 
-        this.jumpHeight = (this.bExtraJump === true) ? -600 : -400;
-        this.movementSpeed = (this.bExtraSpeed === true) ? 240 : 160;
-        this.protect = (this.bExtraProtect === true) ? 5 : 0;
-
         // Using cookies to rememberlast settings
         this.localAmountPerks = (localStorage.getItem(this.localAmountKey) == null) ? '{}' : localStorage.getItem(this.localAmountKey);
         const amountsJSON = JSON.parse(this.localAmountPerks);
@@ -151,6 +147,11 @@ export default class GameScene extends Phaser.Scene
         this.amountKnightSpeed =  (amountsJSON?.Speed) ? amountsJSON.Speed : 0;
         this.amountKnightHealingPotions =  (amountsJSON?.Potions) ? amountsJSON.Potions : 0;
         this.amountKnightSword =  (amountsJSON?.Sword) ? amountsJSON.Sword : 0;
+        
+        this.jumpHeight = (this.bExtraJump === true && this.amountKnightFlight > 0) ? -600 : -400;
+        this.movementSpeed = (this.bExtraSpeed === true && this.amountKnightSpeed > 0) ? 240 : 160;
+        this.protect = (this.bExtraProtect === true && this.amountKnightProtect > 0) ? 5 : 0;
+
     }
 
     preload()
@@ -257,7 +258,7 @@ export default class GameScene extends Phaser.Scene
         this.backgroundMusic = this.sound.add(AUDIO_BACKGROUND_MUSIC_ONE);
         this.backgroundMusic.play();
 
-        if (this.bExtraHealthPotions) {
+        if (this.amountKnightHealingPotions > 0) {
             for (var i = 0; i < 5; i++){
                 this.potionSpawner = new HealthPotionSpawner(this, HEALTH_POTION_KEY);
                 this.potions = this.potionSpawner.spawn();

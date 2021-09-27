@@ -78,25 +78,15 @@ export default class CongratulationsScene extends Phaser.Scene {
         if (walletAddress?.value != '') 
         {
           window.document.getElementById('walletAddress').value = walletAddress;
+          this.buttonSubmit.destroy();
+          window.document.getElementById('post-score')?.click();
         }
-        window.document.getElementById('post-score')?.click();
-        setTimeout(() => {
-          this.scene.start('welcome',
-            {
-              moralisUser: this.moralisUser,
-              bExtraJump: this.bExtraJump,
-              bExtraProtect: this.bExtraProtect,
-              bExtraSpeed: this.bExtraSpeed,
-              bExtraHealthPotions: this.bExtraHealthPotions,
-              bExtraSword: this.bExtraSword
-            });
-        }, 10000);
       })
 
 
     this.input.keyboard.on('keydown-SPACE', () => {
       this.sound.stopAll();
-    }, this);
+    }, this); 
 
 
   }
